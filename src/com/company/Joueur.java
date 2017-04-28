@@ -6,17 +6,13 @@ import java.util.Scanner;
  * Created by Gaby on 22/02/2017.
  */
 public class Joueur {
-    private String nomJoueur;
-    private int numJoueur;
-    private int pointMana=50;
-    private int puissanceCoup;
+    protected String nomJoueur;
+    protected int numJoueur;
+    protected int pointMana=50;
+    protected int puissanceCoup;
 
 
-    public Joueur(String nomJoueur, int numJoueur, int pointMana) {
-        this.nomJoueur = nomJoueur;
-        this.numJoueur = numJoueur;
-        this.pointMana= pointMana;
-    }
+
 
 
 
