@@ -5,10 +5,8 @@ package com.company;
  */
 public class IA extends Joueur {
 
-    public IA(){
-
-        super();
-
+    public IA(String nomIA, int numIA, int pointManaIA){
+        super(nomIA,numIA, pointManaIA);
     }
 
 }
