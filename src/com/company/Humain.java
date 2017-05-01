@@ -5,4 +5,7 @@ package com.company;
  */
 public class Humain extends Joueur {
 
+    public Humain() {
+        super();
+    }
 }

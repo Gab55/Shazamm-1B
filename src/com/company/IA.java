@@ -5,4 +5,10 @@ package com.company;
  */
 public class IA extends Joueur {
 
+    public IA(){
+
+        super();
+
+    }
+
 }

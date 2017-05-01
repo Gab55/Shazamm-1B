@@ -13,9 +13,6 @@ public class Joueur {
 
 
 
-
-
-
     public String getNomJoueur() {
         return nomJoueur;
     }

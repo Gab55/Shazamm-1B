@@ -9,6 +9,8 @@ import java.util.*;
 public class Jeu {
 
     private ArrayList<Joueur> listJoueur;
+    private ArrayList<Humain> listHumain;
+    private ArrayList<IA> listIA;
     private int nbJoueus;
     private int nbManches=1;
     private int nbTours;
@@ -33,8 +35,12 @@ public class Jeu {
             Scanner sc= new Scanner(System.in);
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
-            Joueur j=new Joueur(nomJoueur,numJoueur,pointMana);
+            Joueur j=new Joueur();
+            Humain humain= new Humain();
+            IA ia= new IA();
             listJoueur.add(j);
+            listHumain.add(humain);
+            listIA.add(ia);
             numJoueur+=1;
         }
         Plateau p= new Plateau();
