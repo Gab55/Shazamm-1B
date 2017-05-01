@@ -110,11 +110,12 @@ public class Jeu {
 
     }
 
+    // Méthode de création du comportement de l'IA qui aura un comportement maximisant pour elle et minimisant pour le joueur "Humain"
 
     public void choixPuissanceIA(Plateau plateau){
-        int puissanceH = listHumain.get(0).getPuissanceCoup(); // on va créer un chiffre random pour que l'IA puisse jouer
-        int puissanceMiniIA =1;
-        int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5) ;
+        int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
+        int puissanceMiniIA =1; // la mise minimum de l'IA
+        int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
 
         System.out.println("IA à vous !");
         for (int i=0; i<listIA.size();i++) {
