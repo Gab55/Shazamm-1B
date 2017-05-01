@@ -9,4 +9,5 @@ public class IA extends Joueur {
         super(nomIA,numIA, pointManaIA);
     }
 
+
 }

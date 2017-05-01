@@ -25,6 +25,8 @@ public class Jeu {
     public void debutJeu(){
         this.listCarte=new ArrayList<Carte>();
         this.listJoueur= new ArrayList<Joueur>();
+        this.listHumain= new ArrayList<Humain>() ;
+        this.listIA= new ArrayList<IA>() ;
         int numJoueur=1;
         int pointMana=50;
         String nomJoueur;
@@ -35,9 +37,9 @@ public class Jeu {
             Scanner sc= new Scanner(System.in);
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
-            Joueur j=new Joueur();
-            Humain humain= new Humain();
-            IA ia= new IA();
+            Joueur j = new Joueur(nomJoueur,numJoueur,pointMana);
+            Humain humain= new Humain(nomJoueur,numJoueur,pointMana);
+            IA ia= new IA(nomJoueur,numJoueur,pointMana);
             listJoueur.add(j);
             listHumain.add(humain);
             listIA.add(ia);
@@ -51,7 +53,6 @@ public class Jeu {
         melanger();
 
         while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) {
-
             attaquer(p);
         }
 
@@ -67,7 +68,7 @@ public class Jeu {
             }
         }
 
-    public void choixPuissance(Plateau plateau){
+    public void choixPuissanceHumain(Plateau plateau){
         System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
         for (int i=0; i<listJoueur.size();i++) {
 
@@ -76,7 +77,6 @@ public class Jeu {
                 System.out.println(" Joueur "+listJoueur.get(i).getNomJoueur()+" a plus de mana, fin du tour");
             }
 
-
             System.out.println("Joueur " + listJoueur.get(i).getNomJoueur() + " à vous !");
             Scanner sc = new Scanner(System.in);
             System.out.println("Saisissez un entier : ");
@@ -84,13 +84,13 @@ public class Jeu {
 
             if ((listJoueur.get(i).getPointMana()<=0)){ // Condition si J1 a plus de points de mana
                 FinManche(plateau);
-                System.out.println(" Joueur "+listJoueur.get(i).getNumJoueur()+" a perdu la manche");
+                System.out.println(" Joueur "+listJoueur.get(i).getNomJoueur()+" a perdu la manche");
                 System.out.println("Nouveau tour");
                 break;
             } else if (puissance > listJoueur.get(i).getPointMana()) {
                 System.out.println("Pas possible recommencez");
                 System.out.println("Points de mana Joueur "+listJoueur.get(i).getPointMana());
-                choixPuissance(plateau);
+                choixPuissanceHumain(plateau);
                 break;
             }
             else {
@@ -109,6 +109,57 @@ public class Jeu {
 
     }
 
+
+    public void choixPuissanceIA(Plateau plateau){
+        int puissanceH = listHumain.get(0).getPuissanceCoup();
+        int puissanceMiniIA =1;
+        Random ra = new Random();
+
+        int fonctionIA = puissanceMiniIA+ (int) (Math.random()*puissanceH) ;
+        System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
+        for (int i=0; i<listJoueur.size();i++) {
+
+            if (listJoueur.get(i).getPointMana()==0){
+                FinManche(plateau);
+                System.out.println(" Joueur "+listJoueur.get(i).getNomJoueur()+" a plus de mana, fin du tour");
+            }
+
+            System.out.println("Joueur " + listJoueur.get(i).getNomJoueur() + " à vous !");
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Saisissez un entier : ");
+            int puissance = sc.nextInt();
+
+            if ((listJoueur.get(i).getPointMana()<=0)){ // Condition si J1 a plus de points de mana
+                FinManche(plateau);
+                System.out.println(" Joueur "+listJoueur.get(i).getNomJoueur()+" a perdu la manche");
+                System.out.println("Nouveau tour");
+                break;
+            } else if (puissance > listJoueur.get(i).getPointMana()) {
+                System.out.println("Pas possible recommencez");
+                System.out.println("Points de mana Joueur "+listJoueur.get(i).getPointMana());
+                choixPuissanceIA(plateau);
+                break;
+            }
+            else {
+                listJoueur.get(i).setPuissanceCoup(puissance);
+                listJoueur.get(i).setPointMana(listJoueur.get(i).getPointMana() - puissance);
+                System.out.println(" Puissance du coup " + puissance);
+                //  this.choixCarte(plateau);
+                System.out.println(" la puissance du coup est "+listJoueur.get(i).getPuissanceCoup());
+                System.out.println("il reste " + listJoueur.get(i).getPointMana() + " points de Mana");
+                System.out.println("");
+
+            }
+
+        }
+
+
+    }
+
+
+
+
+
     public void attaquer(Plateau plateau) {
 
 //        Enumeration enumeration = plateau.plateauBase.elements();
@@ -117,9 +168,9 @@ public class Jeu {
 //        }
         //Attaque du joueur 1 pas assez forte
        // while () {
-            this.choixPuissance(plateau);
+            this.choixPuissanceHumain(plateau);
             if (listJoueur.get(0).getPuissanceCoup() < listJoueur.get(1).getPuissanceCoup()) {
-                System.out.println("Pas assez fort J1 le " + listJoueur.get(1).getNumJoueur() + " gagne le tour");
+                System.out.println("Pas assez fort J1 le " + listJoueur.get(1).getNomJoueur() + " gagne le tour");
                 plateau.setPlaceMur(plateau.getPlaceMur() - 1);
                 plateau.plateauBase.put("m", plateau.getPlaceMur());
 
