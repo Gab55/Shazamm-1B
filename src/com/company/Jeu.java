@@ -226,17 +226,17 @@ public class Jeu {
 
 
 
-//    public void initTabCartes() {
-//        for (int i = 0; i < 6; i++) {
-//            cartesJ1[i] = new Carte(i, "\n");
-//            melanger(50);
-//
-//        }for (int i = 0; i < 6; i++) {
-//           cartesJ2[i] = new Carte(i, "\n");
-//            melanger(50);
-//
-//        }
-//    }
+    public void initTabCartes() {
+        for (int i = 0; i < 6; i++) {
+            cartesJ1[i] = new Carte(i, "\n");
+            melanger(50);
+
+        }for (int i = 0; i < 6; i++) {
+           cartesJ2[i] = new Carte(i, "\n");
+            melanger(50);
+
+        }
+    }
 
     public void choixCarte(Plateau plateau){
 
@@ -347,32 +347,32 @@ public class Jeu {
 
     public void superPaquet(){
 
-//        for (int i = 1; i < cartesJ1.length; i++) {
-//            System.out.print(" Cartes joueur 1 [" + i + "]=" + cartesJ1[i] + " ");
-//        }
+        for (int i = 1; i < cartesJ1.length; i++) {
+            System.out.print(" Cartes joueur 1 [" + i + "]=" + cartesJ1[i] + " ");
+      }
 
-//        for (int i = 1; i < cartesJ2.length; i++) {
-//            System.out.print(" Cartes joueur 2 [" + i + "]=" + cartesJ2[i] + " ");
-//        }
+        for (int i = 1; i < cartesJ2.length; i++) {
+            System.out.print(" Cartes joueur 2 [" + i + "]=" + cartesJ2[i] + " ");
+        }
 
     }
 
-//    public void echangerDeuxCartes(){
-//        int z = (int) (Math.random() * 15.0);
-//        int y = (int)(Math.random() * 15.0);
-//        Carte surprise = cartesJ1[y];
-//        cartesJ1[y] = cartesJ1 [z];
-//        cartesJ1[z]= surprise;
-//        Carte surprise2 =cartesJ2[y];
-//        cartesJ2[y] = cartesJ1 [z];
-//        cartesJ2[z]= surprise2;
-//    }
-//
-//    public void melanger(int nbFista) {
-//        for (int i = 0; i < nbFista; i++) {
-//            this.echangerDeuxCartes();
-//        }
-//    }
+    public void echangerDeuxCartes(){
+        int z = (int) (Math.random() * 15.0);
+        int y = (int)(Math.random() * 15.0);
+        Carte surprise = cartesJ1[y];
+        cartesJ1[y] = cartesJ1 [z];
+        cartesJ1[z]= surprise;
+        Carte surprise2 =cartesJ2[y];
+        cartesJ2[y] = cartesJ1 [z];
+        cartesJ2[z]= surprise2;
+    }
+
+    public void melanger(int nbFista) {
+        for (int i = 0; i < nbFista; i++) {
+           this.echangerDeuxCartes();
+        }
+    }
 
     public void melanger() {
         for (int i = 0; i < 50; i++) {
