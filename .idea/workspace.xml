@@ -16,8 +16,8 @@
       <file leaf-file-name="Jeu.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/Jeu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-255">
-              <caret line="123" column="108" lean-forward="true" selection-start-line="123" selection-start-column="108" selection-end-line="123" selection-end-column="108" />
+            <state relative-caret-position="1207">
+              <caret line="230" column="93" lean-forward="false" selection-start-line="230" selection-start-column="93" selection-end-line="230" selection-end-column="93" />
               <folding />
             </state>
           </provider>
@@ -899,8 +899,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Jeu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-255">
-          <caret line="123" column="108" lean-forward="true" selection-start-line="123" selection-start-column="108" selection-end-line="123" selection-end-column="108" />
+        <state relative-caret-position="1207">
+          <caret line="230" column="93" lean-forward="false" selection-start-line="230" selection-start-column="93" selection-end-line="230" selection-end-column="93" />
           <folding />
         </state>
       </provider>

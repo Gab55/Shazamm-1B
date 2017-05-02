@@ -227,10 +227,6 @@ public class Jeu {
    // }
 
 
-
-
-
-
 //        for (int i = 1; i < tableauEntier.length; i++) {
 //            System.out.print(" Connard de joueur 1 [" + i + "]=" + tableauEntier[i] + " ");
 //        }
@@ -260,6 +256,7 @@ public class Jeu {
             Scanner sc = new Scanner(System.in);
             System.out.println("Saisissez une carte : ");
             int choixCarte = sc.nextInt();
+
             if (choixCarte == 1) { // Mutisme
                 System.out.println(" Carte Mutisme");
                 listJoueur.get(0).setPuissanceCoup(0);
