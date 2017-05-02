@@ -17,13 +17,16 @@ public class Jeu {
     private boolean finTour=false;
     private boolean finManche=false;
     private Carte[] cartesJ1 = new Carte[15];
-    private Carte[] cartesJ2 = new Carte[15];
-    private ArrayList <Carte> listCarte;
+   private Carte[] cartesJ2 = new Carte[15];
+    //private ArrayList <Carte> listCarte;
+    //private ArrayList <Carte> listCarte2;
 
 
 
     public void debutJeu(){
-        this.listCarte=new ArrayList<Carte>();
+//        this.listCarte=new ArrayList<Carte>();
+//        this.listCarte2=new ArrayList<Carte>();
+
         this.listJoueur= new ArrayList<Joueur>();
         this.listHumain= new ArrayList<Humain>() ;
         this.listIA= new ArrayList<IA>() ;
@@ -47,11 +50,11 @@ public class Jeu {
         }
         System.out.println("Liste joueur Humain "+listHumain+" Liste joueur IA "+listIA);
         Plateau p= new Plateau();
-        //initTabCartes();
-       // couleurJoueur();
-        init();
-        superPaquet();
-        melanger();
+//        initTabCartes();
+//       // couleurJoueur();
+//        //init();
+//        //superPaquet();
+//        melanger(50);
 
         while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) {
             attaquer(p);
@@ -61,13 +64,13 @@ public class Jeu {
     }
 
 
-       public void init() {
-            for (int j =0; j<14;j++){
-                Carte c =new Carte(j," ");
-                this.listCarte.add(c);
-
-            }
-        }
+//       public void init() {
+//            for (int j =0; j<14;j++){
+//                Carte c =new Carte(j," ");
+//                this.listCarte.add(c);
+//                this.listCarte2.add(c);
+//            }
+//        }
 
     public void choixPuissanceHumain(Plateau plateau){
         System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
@@ -98,7 +101,8 @@ public class Jeu {
                 listHumain.get(0).setPuissanceCoup(puissance);
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance);
                 System.out.println(" Puissance du coup " + puissance);
-              //  this.choixCarte(plateau);
+//                superPaquet();
+//                this.choixCarte(plateau);
                 System.out.println(" la puissance du coup est "+listHumain.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana");
                 System.out.println("");
@@ -117,14 +121,25 @@ public class Jeu {
         int puissanceMiniIA =1; // la mise minimum de l'IA
         int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
 
+        // on va donner une chance au joueur humain, bien entendu l'IA cherche toujour à maximiser ces coups
+        if (listHumain.get(0).getPointMana()<=40){
+            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +4);
+
+        }else if (listHumain.get(0).getPointMana()<=30){
+            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +3);
+
+        }else if (listHumain.get(0).getPointMana()<=20){
+            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +2);
+
+        }else if (listHumain.get(0).getPointMana()<=10){
+            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +1);
+        }
         System.out.println("IA à vous !");
         for (int i=0; i<listIA.size();i++) {
-
             if (listIA.get(0).getPointMana()==0){
                 FinManche(plateau);
                 System.out.println(" l'IA "+listIA.get(0).getNomJoueur()+" a plus de mana, fin du tour");
             }
-
 
             if ((listIA.get(0).getPointMana()<=0)){ // Condition si IA a plus de points de mana
                 FinManche(plateau);
@@ -150,9 +165,6 @@ public class Jeu {
 
 
     }
-
-
-
 
 
     public void attaquer(Plateau plateau) {
@@ -227,11 +239,11 @@ public class Jeu {
 
 
     public void initTabCartes() {
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 14; i++) {
             cartesJ1[i] = new Carte(i, "\n");
             melanger(50);
 
-        }for (int i = 0; i < 6; i++) {
+       }for (int i = 0; i < 14; i++) {
            cartesJ2[i] = new Carte(i, "\n");
             melanger(50);
 
@@ -248,7 +260,6 @@ public class Jeu {
             Scanner sc = new Scanner(System.in);
             System.out.println("Saisissez une carte : ");
             int choixCarte = sc.nextInt();
-
             if (choixCarte == 1) { // Mutisme
                 System.out.println(" Carte Mutisme");
                 listJoueur.get(0).setPuissanceCoup(0);
@@ -343,19 +354,20 @@ public class Jeu {
         }
     }
 
-
-
     public void superPaquet(){
 
-        for (int i = 1; i < cartesJ1.length; i++) {
-            System.out.print(" Cartes joueur 1 [" + i + "]=" + cartesJ1[i] + " ");
-      }
+        for (int i = 0; i < 5; i++) {
+           System.out.print(" Cartes Humain [" + i + "]=" + cartesJ1[i] + " ");
+     }
 
-        for (int i = 1; i < cartesJ2.length; i++) {
-            System.out.print(" Cartes joueur 2 [" + i + "]=" + cartesJ2[i] + " ");
-        }
+//        for (int i = 1; i < 4; i++) {
+//            System.out.print(" Cartes IA [" + i + "]=" + cartesJ2[i] + " ");
+//       }
 
-    }
+   }
+
+
+
 
     public void echangerDeuxCartes(){
         int z = (int) (Math.random() * 15.0);
@@ -368,17 +380,18 @@ public class Jeu {
         cartesJ2[z]= surprise2;
     }
 
+
     public void melanger(int nbFista) {
         for (int i = 0; i < nbFista; i++) {
            this.echangerDeuxCartes();
         }
     }
 
-    public void melanger() {
-        for (int i = 0; i < 50; i++) {
-            Collections.shuffle(listCarte);
-        }
-    }
+//    public void melanger() {
+//        for (int i = 0; i < 50; i++) {
+//            Collections.shuffle(listCarte);
+//        }
+//    }
 
     public void couleurJoueur(){
         Random ra = new Random();
