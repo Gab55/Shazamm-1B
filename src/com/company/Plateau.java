@@ -13,9 +13,6 @@ public class Plateau {
     private int placeJ1 = placeMur-3;
     private int placeJ2= placeMur+3;
 
-
-
-
     public Plateau() {
 
     }

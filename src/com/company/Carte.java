@@ -94,19 +94,42 @@ public class Carte {
                 break;
             } else if (numCarte == 8) {
                 System.out.println("carte Double dose");
+                jeu.getListJoueur().get(i).setPuissanceCoup(jeu.getListJoueur().get(i).getPuissanceCoup() * 2);
             } else if (numCarte == 9) {
                 System.out.println("carte Qui perd gagne");
+                if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(0)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                } else if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(1)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                }
             } else if (numCarte == 10) {
                 System.out.println("carte Brasier");
+                if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(0)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                } else if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(1)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                }
+
             } else if (numCarte == 11) {
                 System.out.println("carte Résistance");
+                if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(0)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() - 1);
+                } else if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(1)) {
+                    plateau.setPlaceMur(plateau.getPlaceMur() + 1);
+                }
             } else if (numCarte == 12) {
                 System.out.println("carte Harpagon");
             } else if (numCarte == 13) {
                 System.out.println("carte Boost réserve");
+                jeu.getListJoueur().get(i).setPointMana(jeu.getListJoueur().get(i).getPointMana() + 13);
             } else if (numCarte == 14) {
                 System.out.println("carte Aspiration");
+                if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(0)) {
+                    jeu.getListJoueur().get(0).setPointMana(jeu.getListJoueur().get(1).getPuissanceCoup());
+                } else if (jeu.getListJoueur().get(i) == jeu.getListJoueur().get(1)) {
+                    jeu.getListJoueur().get(1).setPointMana(jeu.getListJoueur().get(0).getPuissanceCoup());
 
+                }
             }
         }
     }
