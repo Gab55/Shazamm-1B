@@ -259,7 +259,7 @@ public class Jeu {
 
     public void pouvoirCarte(Plateau plateau, Carte carte,int idCarte, Joueur joueur) {
 
-                carte.effetCarte(idCarte,joueur);
+                carte.effetCarte(idCarte,joueur, plateau,this);
                 //   joueur.setPuissanceCoup(0);
 
 

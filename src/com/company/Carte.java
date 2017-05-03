@@ -1,5 +1,6 @@
 package com.company;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import jdk.nashorn.internal.scripts.JO;
 
 import java.util.ArrayList;
@@ -54,39 +55,60 @@ public class Carte {
         return ""+numCarte;
     }
 
-    public void effetCarte(int nb, Joueur joueur) {
-        numCarte=nb;
-        if (numCarte == 1) {
-            System.out.println("Mutisme");
-           joueur.setPuissanceCoup(0);
-           System.out.println(joueur.getPuissanceCoup());
-        } else if (numCarte == 2) {
-            System.out.println("carte Clone");
-        } else if (numCarte == 3) {
-            System.out.println("carte Larcin");
-        } else if (numCarte == 4) {
-            System.out.println("carte Fin de manche");
-        } else if (numCarte == 5) {
-            System.out.println("carte Milieu");
-        } /*else if (numCarte == 6) {
-            return "carte Recyclage";
-        } else if (numCarte == 7) {
-            return "carte Boost attaque";
-        } else if (numCarte == 8) {
-            return "carte Double dose";
-        } else if (numCarte == 9) {
-            return "carte Qui perd gagne";
-        } else if (numCarte == 10) {
-            return "carte Brasier";
-        } else if (numCarte == 11) {
-            return "carte Résistance";
-        } else if (numCarte == 12) {
-            return "carte Harpagon";
-        } else if (numCarte == 13) {
-            return "carte Boost réserve";
-        } else if (numCarte == 14) {
-            return "carte Aspiration";
-        }*/
+    public void effetCarte(int nb, Joueur joueur,Plateau plateau, Jeu jeu) {
+        for (int i = 0; i < jeu.getListJoueur().size(); i++) {
+            numCarte = nb;
+            if (numCarte == 1) {
+                System.out.println("Mutisme");
+                joueur.setPuissanceCoup(i);
+                System.out.println(joueur.getPuissanceCoup());
+                break;
+            } else if (numCarte == 2) {
+                System.out.println("carte Clone");
+                break;
+            } else if (numCarte == 3) {
+                System.out.println("carte Larcin");
+                break;
+            } else if (numCarte == 4) {
+                System.out.println("carte Fin de manche");
+                jeu.FinManche(plateau);
+                break;
+            } else if (numCarte == 5) {
+                System.out.println("carte Milieu");
+                plateau.setPlaceMur(10);
+                break;
+            } else if (numCarte == 6) {
+                System.out.println("carte Recyclage");
+                Scanner sc2 = new Scanner(System.in);
+                System.out.println("Vous avez le droit à 5 points en dessous ou au dessus de votre mise ? ");
+                int choix2 = sc2.nextInt();
+                if ((choix2 > 5) || (choix2 < 0)) {
+                    System.out.println(" Impossible");
+                } else {
+                    joueur.setPuissanceCoup(choix2);
+                }
+                break;
+            } else if (numCarte == 7) {
+                System.out.println("carte Boost attaque");
+                jeu.getListJoueur().get(i).setPuissanceCoup(jeu.getListJoueur().get(i).getPuissanceCoup() + 7);
+                break;
+            } else if (numCarte == 8) {
+                System.out.println("carte Double dose");
+            } else if (numCarte == 9) {
+                System.out.println("carte Qui perd gagne");
+            } else if (numCarte == 10) {
+                System.out.println("carte Brasier");
+            } else if (numCarte == 11) {
+                System.out.println("carte Résistance");
+            } else if (numCarte == 12) {
+                System.out.println("carte Harpagon");
+            } else if (numCarte == 13) {
+                System.out.println("carte Boost réserve");
+            } else if (numCarte == 14) {
+                System.out.println("carte Aspiration");
+
+            }
+        }
     }
 
 
