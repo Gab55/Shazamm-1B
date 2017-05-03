@@ -16,16 +16,13 @@ public class Jeu {
     private int nbTours;
     private boolean finTour=false;
     private boolean finManche=false;
-    private Carte[] cartesJ1 = new Carte[15];
-   private Carte[] cartesJ2 = new Carte[15];
-    //private ArrayList <Carte> listCarte;
-    //private ArrayList <Carte> listCarte2;
-
+    private ArrayList <Carte> listCarte;
+    private ArrayList <Carte> listCarte2;
 
 
     public void debutJeu(){
-//        this.listCarte=new ArrayList<Carte>();
-//        this.listCarte2=new ArrayList<Carte>();
+        this.listCarte=new ArrayList<Carte>();
+        this.listCarte2=new ArrayList<Carte>();
 
         this.listJoueur= new ArrayList<Joueur>();
         this.listHumain= new ArrayList<Humain>() ;
@@ -34,13 +31,13 @@ public class Jeu {
         int pointMana=50;
         String nomJoueur;
         System.out.println("Bienvenue dans le jeu Shazamm !");
-
+        Joueur j= null;
         for (int i =1; i<2; i++){
 
             Scanner sc= new Scanner(System.in);
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
-            Joueur j = new Joueur(nomJoueur,numJoueur,pointMana);
+            j = new Joueur(nomJoueur,numJoueur,pointMana);
             Humain humain= new Humain(nomJoueur,numJoueur,pointMana);
             IA ia= new IA(nomJoueur,numJoueur,pointMana);
             listJoueur.add(j);
@@ -50,32 +47,38 @@ public class Jeu {
         }
         System.out.println("Liste joueur Humain "+listHumain+" Liste joueur IA "+listIA);
         Plateau p= new Plateau();
+
 //        initTabCartes();
 //       // couleurJoueur();
-//        //init();
-//        //superPaquet();
+            init();
+            superPaquet();
 //        melanger(50);
-
+        //Carte c= this.listCarte.get(0);
         while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) {
-            attaquer(p);
+            attaquer(p,j);
         }
 
 
     }
 
+    public void init() {
+        for (int i =1; i<6;i++){
+            Carte c =new Carte(i," ");
+            this.listCarte.add(c);
+            melanger();
+        }for (int j =1; j<6;j++){
+            Carte c =new Carte(j," ");
+            this.listCarte2.add(c);
+            melanger();
+        }
+    }
 
-//       public void init() {
-//            for (int j =0; j<14;j++){
-//                Carte c =new Carte(j," ");
-//                this.listCarte.add(c);
-//                this.listCarte2.add(c);
-//            }
-//        }
 
-    public void choixPuissanceHumain(Plateau plateau){
+    public void choixPuissanceHumain(Plateau plateau, Joueur joueur){
         System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
         for (int i=0; i<listHumain.size();i++) {
-
+            superPaquet();
+            choixCarte(plateau,joueur);
             if (listHumain.get(0).getPointMana()==0){
                 FinManche(plateau);
                 System.out.println(" Joueur "+listHumain.get(0).getNomJoueur()+" a plus de mana, fin du tour");
@@ -94,15 +97,14 @@ public class Jeu {
             } else if (puissance > listHumain.get(0).getPointMana()) {
                 System.out.println("Pas possible recommencez");
                 System.out.println("Points de mana Joueur "+listHumain.get(0).getPointMana());
-                choixPuissanceHumain(plateau);
+                choixPuissanceHumain(plateau,joueur);
                 break;
             }
             else {
                 listHumain.get(0).setPuissanceCoup(puissance);
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance);
                 System.out.println(" Puissance du coup " + puissance);
-//                superPaquet();
-//                this.choixCarte(plateau);
+
                 System.out.println(" la puissance du coup est "+listHumain.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana");
                 System.out.println("");
@@ -154,7 +156,6 @@ public class Jeu {
                 listIA.get(0).setPuissanceCoup(fonctionIA);
                 listIA.get(0).setPointMana(listIA.get(0).getPointMana() - fonctionIA);
                 System.out.println(" Puissance du coup " + fonctionIA);
-                //  this.choixCarte(plateau);
                 System.out.println(" la puissance du coup est l'IA "+listIA.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listIA.get(0).getPointMana() + " points de Mana à l'IA");
                 System.out.println("");
@@ -167,7 +168,7 @@ public class Jeu {
     }
 
 
-    public void attaquer(Plateau plateau) {
+    public void attaquer(Plateau plateau, Joueur joueur) {
 
 //        Enumeration enumeration = plateau.plateauBase.elements();
 //        while (enumeration.hasMoreElements()) {
@@ -175,7 +176,7 @@ public class Jeu {
 //        }
         //Attaque du joueur 1 pas assez forte
        // while () {
-            this.choixPuissanceHumain(plateau);
+            this.choixPuissanceHumain(plateau, joueur);
             this.choixPuissanceIA(plateau);
             if (listHumain.get(0).getPuissanceCoup() < listIA.get(0).getPuissanceCoup()) {
                 System.out.println("Pas assez fort HUMAIN le " + listIA.get(0).getNomJoueur() + " gagne le tour (IA) J2 ");
@@ -233,162 +234,164 @@ public class Jeu {
 
 
 
+//
+//    public void initTabCartes() {
+//        for (int i = 0; i < 14; i++) {
+//            cartesJ1[i] = new Carte(i, "\n");
+//            melanger(50);
+//
+//       }for (int i = 0; i < 14; i++) {
+//           cartesJ2[i] = new Carte(i, "\n");
+//            melanger(50);
+//
+//        }
+//    }
 
-    public void initTabCartes() {
-        for (int i = 0; i < 14; i++) {
-            cartesJ1[i] = new Carte(i, "\n");
-            melanger(50);
-
-       }for (int i = 0; i < 14; i++) {
-           cartesJ2[i] = new Carte(i, "\n");
-            melanger(50);
-
+    public void choixCarte(Plateau plateau, Joueur joueur){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Saisissez une carte entre 1 et 5 : ");
+        int choix = sc.nextInt();
+        if (listCarte.contains(listCarte.get(choix))) {
+            this.pouvoirCarte(plateau, listCarte.get(choix) ,listCarte.get(choix).getNumCarte(),joueur);
         }
+
     }
 
-    public void choixCarte(Plateau plateau){
+    public void pouvoirCarte(Plateau plateau, Carte carte,int idCarte, Joueur joueur) {
 
-        this.pouvoirCarte(plateau);
-    }
+                carte.effetCarte(idCarte,joueur);
+                //   joueur.setPuissanceCoup(0);
 
-    public void pouvoirCarte(Plateau plateau){
-        for (int i = 0;i<listJoueur.size();i++) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Saisissez une carte : ");
-            int choixCarte = sc.nextInt();
 
-            if (choixCarte == 1) { // Mutisme
-                System.out.println(" Carte Mutisme");
-                listJoueur.get(0).setPuissanceCoup(0);
-                listJoueur.get(1).setPuissanceCoup(0);
-                break;
+            //System.out.println(listCarte.get(idCarte).getNumCarte());
+            /*else if (listCarte.contains(listCarte.get(choix))) {// carte Clone
+                System.out.println(listCarte.get(j).getNomCarte());
 
-            } else if (choixCarte == 2) { //carte Clone
-                break;
+            } else if (listCarte.get(j).getNumCarte() == choix) { // carte Larcin
+//                System.out.println("Carte carte Larcin");
+//
+//            } else if (listCarte.get(j).getNumCarte()==choix) { //carte Fin de manche
+//                System.out.println("Carte carte Fin de manche");
+//                    this.FinManche(plateau);
+//
+//
+//            } else if (listCarte.get(j).getNumCarte()==choix) { //carte Milieu
+//                System.out.println("Carte carte Milieu");
+//
+//                      plateau.setPlaceMur(10);
+//
+//
+//            } *//*else if (listCarte.get(j).getNumCarte()==choix) { // carte Recyclage
+                *//*System.out.println("Carte carte Recyclage");
 
-            } else if (choixCarte == 3) { // carte Larcin
-                break;
+                    Scanner sc2 = new Scanner(System.in);
+                    System.out.println("Vous avez le droit à 5 points en dessous ou au dessus de votre mise ? ");
+                    int choix2 = sc2.nextInt();
+                    if ((choix2 > 5) || (choix2 < 0)) {
+                        System.out.println(" Impossible");
+                    } else {
+                        joueur.setPuissanceCoup(choix2);
+                    }
 
-            } else if (choixCarte == 4) { //carte Fin de manche
-                System.out.println("Carte carte Fin de manche");
-                this.FinManche(plateau);
-                break;
-
-            } else if (choixCarte == 5) { //carte Milieu
-                System.out.println("Carte carte Milieu");
-
-                plateau.setPlaceMur(10);
-                break;
-
-            } else if (choixCarte == 6) {  //carte Recyclage
-                System.out.println("Carte carte Recyclage");
-
-                Scanner sc2 = new Scanner(System.in);
-                System.out.println("Vous avez le droit à 5 points en dessous ou au dessus de votre mise ? ");
-                int choix = sc2.nextInt();
-                if ((choix>5)||(choix<0)){
-                    System.out.println(" Impossible");
-                }else {
-                    listJoueur.get(i).setPuissanceCoup(choix);
-                }
-                break;
-
-            } else if (choixCarte == 7) {//carte Boost
+            } else if (listCarte.get(j).getNumCarte()==choix) {//carte Boost
                 System.out.println("Carte carte Boost");
 
-                listJoueur.get(i).setPuissanceCoup(listJoueur.get(i).getPuissanceCoup() + 7);
-                break;
-            } else if (choixCarte == 8) { // Double dose
+                    listJoueur.get(i).setPuissanceCoup(listJoueur.get(i).getPuissanceCoup() + 7);
+
+            } else if (listCarte.get(j).getNumCarte()==choix) { //  Double dose
                 System.out.println("Carte carte Double dose");
 
-                listJoueur.get(i).setPuissanceCoup(listJoueur.get(i).getPuissanceCoup() * 2);
-                break;
+                               listJoueur.get(i).setPuissanceCoup(listJoueur.get(i).getPuissanceCoup() * 2);
 
-            } else if (choixCarte == 9) { //carte Qui perd gagne
+
+            } else if (listCarte.get(j).getNumCarte()==choix) { //carte Qui perd gagne
                 System.out.println("Carte carte Qui perd gagne");
-                if (listJoueur.get(i)==listJoueur.get(0)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() -2);
-                }else if (listJoueur.get(i)==listJoueur.get(1)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() +2);
-                }
-                break;
+                     if (listJoueur.get(i) == listJoueur.get(0)) {
+                          plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                       } else if (listJoueur.get(i) == listJoueur.get(1)) {
+                          plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                  }
 
-            } else if (choixCarte == 10) { //carte Brasier
+
+            } else if (listCarte.get(j).getNumCarte()==choix) { // carte Brasier
                 System.out.println("Carte Brasier");
-                if (listJoueur.get(i)==listJoueur.get(0)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() + 2);
-                }else if (listJoueur.get(i)==listJoueur.get(1)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() - 2);
-                }
-                break;
+                  if (listJoueur.get(i) == listJoueur.get(0)) {
+                        plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                    } else if (listJoueur.get(i) == listJoueur.get(1)) {
+                        plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                    }
 
-            } else if (choixCarte == 11) { // carte Résistance
+
+            } else if (listCarte.get(j).getNumCarte()==choix) {  // carte Résistance
                 System.out.println("Carte Resistance");
-                if (listJoueur.get(i)==listJoueur.get(0)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() -1);
-                }else if (listJoueur.get(i)==listJoueur.get(1)){
-                    plateau.setPlaceMur(plateau.getPlaceMur() +1);
-                }
-                break;
+                  if (listJoueur.get(i) == listJoueur.get(0)) {
+                     plateau.setPlaceMur(plateau.getPlaceMur() - 1);
+                  } else if (listJoueur.get(i) == listJoueur.get(1)) {
+                      plateau.setPlaceMur(plateau.getPlaceMur() + 1);
+                  }
 
-            } else if (choixCarte == 12) { // Harpagon
-                break;
+            } else if (listCarte.get(j).getNumCarte()==choix) {  // Harpagon
 
-            } else if (choixCarte == 13) { // Boost réserve
+            } else if (listCarte.get(j).getNumCarte()==choix) { // Boost réserve
                 System.out.println("Carte Boost réserve");
-                listJoueur.get(i).setPointMana(listJoueur.get(i).getPointMana() + 13);
-                break;
+                    listJoueur.get(i).setPointMana(listJoueur.get(i).getPointMana() + 13);
 
-            } else if (choixCarte == 14) { //Aspiration
+            } else if (listCarte.get(j).getNumCarte()==choix) { // Aspiration
                 System.out.println("Carte Aspiration");
-                if (listJoueur.get(i)==listJoueur.get(0)){
-                    listJoueur.get(0).setPointMana(listJoueur.get(1).getPuissanceCoup());
-                }else if (listJoueur.get(i)==listJoueur.get(1)){
-                    listJoueur.get(1).setPointMana(listJoueur.get(0).getPuissanceCoup());
-                }
-                    break;
+                   if (listJoueur.get(i) == listJoueur.get(0)) {
+                      listJoueur.get(0).setPointMana(listJoueur.get(1).getPuissanceCoup());
+                   } else if (listJoueur.get(i) == listJoueur.get(1)) {
+                      listJoueur.get(1).setPointMana(listJoueur.get(0).getPuissanceCoup());
             }
-        }
-    }
+
+            }*/
+
+            }
+
+
+
+
 
     public void superPaquet(){
 
-        for (int i = 0; i < 5; i++) {
-           System.out.print(" Cartes Humain [" + i + "]=" + cartesJ1[i] + " ");
+        for (int i = 0; i < 1; i++) {
+           System.out.print(" Cartes Humain [" + i + "]=" + listCarte + " ");
      }
 
-//        for (int i = 1; i < 4; i++) {
-//            System.out.print(" Cartes IA [" + i + "]=" + cartesJ2[i] + " ");
-//       }
+        for (int i = 1; i < 1; i++) {
+            System.out.print(" Cartes IA [" + i + "]=" + listCarte2 + " ");
+       }
 
    }
 
-
-
-
-    public void echangerDeuxCartes(){
-        int z = (int) (Math.random() * 15.0);
-        int y = (int)(Math.random() * 15.0);
-        Carte surprise = cartesJ1[y];
-        cartesJ1[y] = cartesJ1 [z];
-        cartesJ1[z]= surprise;
-        Carte surprise2 =cartesJ2[y];
-        cartesJ2[y] = cartesJ1 [z];
-        cartesJ2[z]= surprise2;
-    }
-
-
-    public void melanger(int nbFista) {
-        for (int i = 0; i < nbFista; i++) {
-           this.echangerDeuxCartes();
-        }
-    }
-
-//    public void melanger() {
-//        for (int i = 0; i < 50; i++) {
-//            Collections.shuffle(listCarte);
+//
+//
+//
+//    public void echangerDeuxCartes(){
+//        int z = (int) (Math.random() * 15.0);
+//        int y = (int)(Math.random() * 15.0);
+//        Carte surprise = cartesJ1[y];
+//        cartesJ1[y] = cartesJ1 [z];
+//        cartesJ1[z]= surprise;
+//        Carte surprise2 =cartesJ2[y];
+//        cartesJ2[y] = cartesJ1 [z];
+//        cartesJ2[z]= surprise2;
+//    }
+//
+//
+//    public void melanger(int nbFista) {
+//        for (int i = 0; i < nbFista; i++) {
+//           this.echangerDeuxCartes();
 //        }
 //    }
+
+    public void melanger() {
+        for (int i = 0; i < 50; i++) {
+            Collections.shuffle(listCarte);
+        }for (int i = 0; i < 60; i++) {
+            Collections.shuffle(listCarte2);
+        }
+    }
 
     public void couleurJoueur(){
         Random ra = new Random();
@@ -434,6 +437,47 @@ public class Jeu {
         }
 
          }
+
+
+    public ArrayList<Joueur> getListJoueur() {
+        return listJoueur;
+    }
+
+    public void setListJoueur(ArrayList<Joueur> listJoueur) {
+        this.listJoueur = listJoueur;
+    }
+
+    public ArrayList<Humain> getListHumain() {
+        return listHumain;
+    }
+
+    public void setListHumain(ArrayList<Humain> listHumain) {
+        this.listHumain = listHumain;
+    }
+
+    public ArrayList<IA> getListIA() {
+        return listIA;
+    }
+
+    public void setListIA(ArrayList<IA> listIA) {
+        this.listIA = listIA;
+    }
+
+    public ArrayList<Carte> getListCarte() {
+        return listCarte;
+    }
+
+    public void setListCarte(ArrayList<Carte> listCarte) {
+        this.listCarte = listCarte;
+    }
+
+    public ArrayList<Carte> getListCarte2() {
+        return listCarte2;
+    }
+
+    public void setListCarte2(ArrayList<Carte> listCarte2) {
+        this.listCarte2 = listCarte2;
+    }
     }
 
 

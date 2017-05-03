@@ -15,6 +15,7 @@ public class Carte {
     private String nomCarte;
 
 
+
     public Carte(int numCarte, String nomCarte) {
         this.numCarte = numCarte;
         this.nomCarte = nomCarte;
@@ -53,8 +54,40 @@ public class Carte {
         return ""+numCarte;
     }
 
-
-
+    public void effetCarte(int nb, Joueur joueur) {
+        numCarte=nb;
+        if (numCarte == 1) {
+            System.out.println("Mutisme");
+           joueur.setPuissanceCoup(0);
+           System.out.println(joueur.getPuissanceCoup());
+        } else if (numCarte == 2) {
+            System.out.println("carte Clone");
+        } else if (numCarte == 3) {
+            System.out.println("carte Larcin");
+        } else if (numCarte == 4) {
+            System.out.println("carte Fin de manche");
+        } else if (numCarte == 5) {
+            System.out.println("carte Milieu");
+        } /*else if (numCarte == 6) {
+            return "carte Recyclage";
+        } else if (numCarte == 7) {
+            return "carte Boost attaque";
+        } else if (numCarte == 8) {
+            return "carte Double dose";
+        } else if (numCarte == 9) {
+            return "carte Qui perd gagne";
+        } else if (numCarte == 10) {
+            return "carte Brasier";
+        } else if (numCarte == 11) {
+            return "carte Résistance";
+        } else if (numCarte == 12) {
+            return "carte Harpagon";
+        } else if (numCarte == 13) {
+            return "carte Boost réserve";
+        } else if (numCarte == 14) {
+            return "carte Aspiration";
+        }*/
+    }
 
 
     public int getNumCarte() {
