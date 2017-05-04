@@ -28,14 +28,16 @@ public class Jeu {
         String nomJoueur;
         System.out.println("Bienvenue dans le jeu Shazamm !");
         Joueur j= null;
+        Humain humain=null;
+        IA ia=null;
         for (int i =1; i<2; i++){
 
             Scanner sc= new Scanner(System.in);
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
             j = new Joueur(nomJoueur,numJoueur,pointMana);
-            Humain humain= new Humain(nomJoueur,numJoueur,pointMana);
-            IA ia= new IA(nomJoueur,numJoueur,pointMana);
+            humain= new Humain(nomJoueur,numJoueur,pointMana);
+            ia= new IA(nomJoueur,numJoueur,pointMana);
             listJoueur.add(j);
             listHumain.add(humain);
             listIA.add(ia);
@@ -48,18 +50,18 @@ public class Jeu {
         superPaquet();
 
         while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) {
-            attaquer(p,j);
+            attaquer(p,humain,ia);
         }
 
 
     }
 
     public void init() {
-        for (int i =1; i<6;i++){
+        for (int i =1; i<14;i++){
             Carte c =new Carte(i," ");
             this.listCarte.add(c);
             melanger();
-        }for (int j =1; j<6;j++){
+        }for (int j =1; j<14;j++){
             Carte c =new Carte(j," ");
             this.listCarte2.add(c);
             melanger();
@@ -67,11 +69,10 @@ public class Jeu {
     }
 
 
-    public void choixPuissanceHumain(Plateau plateau, Joueur joueur){
+    public void choixPuissanceHumain(Plateau plateau,  Humain humain){
         System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
         for (int i=0; i<listHumain.size();i++) {
             superPaquet();
-            choixCarte(plateau,joueur);
             if (listHumain.get(0).getPointMana()==0){
                 FinManche(plateau);
                 System.out.println(" Joueur "+listHumain.get(0).getNomJoueur()+" a plus de mana, fin du tour");
@@ -90,12 +91,13 @@ public class Jeu {
             } else if (puissance > listHumain.get(0).getPointMana()) {
                 System.out.println("Pas possible recommencez");
                 System.out.println("Points de mana Joueur "+listHumain.get(0).getPointMana());
-                choixPuissanceHumain(plateau,joueur);
+                choixPuissanceHumain(plateau,humain);
                 break;
             }
             else {
                 listHumain.get(0).setPuissanceCoup(puissance);
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance);
+                choixCarte(plateau,humain);
                 System.out.println(" Puissance du coup " + puissance);
 
                 System.out.println(" la puissance du coup est "+listHumain.get(0).getPuissanceCoup());
@@ -111,7 +113,7 @@ public class Jeu {
 
     // Méthode de création du comportement de l'IA qui aura un comportement maximisant pour elle et minimisant pour le joueur "Humain"
 
-    public void choixPuissanceIA(Plateau plateau){
+    public void choixPuissanceIA(Plateau plateau, IA ia){
         int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
         int puissanceMiniIA =1; // la mise minimum de l'IA
         int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
@@ -142,12 +144,13 @@ public class Jeu {
                 System.out.println("Nouveau tour");
                 break;
             } else if (fonctionIA > listIA.get(i).getPointMana()) {
-                choixPuissanceIA(plateau);
+                choixPuissanceIA(plateau,ia);
                 break;
             }
             else {
                 listIA.get(0).setPuissanceCoup(fonctionIA);
                 listIA.get(0).setPointMana(listIA.get(0).getPointMana() - fonctionIA);
+                choixCarteIA(plateau, ia);
                 System.out.println(" Puissance du coup " + fonctionIA);
                 System.out.println(" la puissance du coup est l'IA "+listIA.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listIA.get(0).getPointMana() + " points de Mana à l'IA");
@@ -158,10 +161,9 @@ public class Jeu {
     }
 
 
-    public void attaquer(Plateau plateau, Joueur joueur) {
-
-        this.choixPuissanceHumain(plateau, joueur);
-        this.choixPuissanceIA(plateau);
+    public void attaquer(Plateau plateau,  Humain humain, IA ia) {
+        this.choixPuissanceHumain(plateau, humain);
+        this.choixPuissanceIA(plateau, ia);
         if (listHumain.get(0).getPuissanceCoup() < listIA.get(0).getPuissanceCoup()) {
             System.out.println("Pas assez fort HUMAIN le " + listIA.get(0).getNomJoueur() + " gagne le tour (IA) J2 ");
             plateau.setPlaceMur(plateau.getPlaceMur() - 1);
@@ -177,11 +179,12 @@ public class Jeu {
                 nbManches+=1;
             }
 
-            if (plateau.getPlaceJ1() == 0) {          // Condition si J1 est à 0
+            if (plateau.getPlaceJ1() == 0) {     // Condition si J1 est à 0
                 System.out.println("Fin du game");
-                //Attaque IA pas assez forte
+
             }
 
+            //Attaque IA pas assez forte
         } else if (listHumain.get(0).getPuissanceCoup() > listIA.get(0).getPuissanceCoup()) {
             System.out.println("Pas assez fort IA le " + listHumain.get(0).getNomJoueur() + " gagne le tour (HUMAIN) J1 ");
             plateau.setPlaceMur(plateau.getPlaceMur() + 1);
@@ -194,12 +197,12 @@ public class Jeu {
                 FinManche(plateau);
                 nbManches+=1;
             }
-            if (plateau.getPlaceJ2() == plateau.getTailleTab()) {          // Condition si J2 est au bout du plateau droit
+            if (plateau.getPlaceJ2() == plateau.getTailleTab()) {     // Condition si J2 est au bout du plateau droit
                 System.out.println("Fin du game");
 
             }
 
-        } else { //if (listJoueur.get(0).getPuissanceCoup() == listJoueur.get(1).getPuissanceCoup())
+        } else {
 
             System.out.println(" Même puissance pour les deux joueurs");
         }
@@ -211,19 +214,47 @@ public class Jeu {
     }
 
 
-    public void choixCarte(Plateau plateau, Joueur joueur){
+    public void choixCarte(Plateau plateau,  Humain humain){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Saisissez une carte entre 1 et 5 : ");
+        System.out.println("Saisissez une carte entre 0 et 4 : ");
         int choix = sc.nextInt();
+        if (choix>4){
+            System.out.println("Choix invalide recommencez");
+            this.choixCarte(plateau, humain);
+        }
         if (listCarte.contains(listCarte.get(choix))) {
-            this.pouvoirCarte(plateau, listCarte.get(choix) ,listCarte.get(choix).getNumCarte(),joueur);
+            this.pouvoirCarte(plateau, listCarte.get(choix) ,listCarte.get(choix).getNumCarte(),humain);
+
         }
 
     }
 
-    public void pouvoirCarte(Plateau plateau, Carte carte,int idCarte, Joueur joueur) {
+    public void pouvoirCarte(Plateau plateau, Carte carte,int idCarte, Humain humain) {
 
-        carte.effetCarte(idCarte,joueur, plateau,this);
+        carte.effetCarte(idCarte,humain, plateau,this);
+    }
+
+
+    public void choixCarteIA(Plateau plateau, IA ia){
+        Random random = new Random();
+        int min = 0;
+        int max = 4;
+        int choixAleatoire = random.nextInt(max-min +1)+min;
+        if (choixAleatoire>4){
+            System.out.println("Choix invalide recommencez");
+            this.choixCarteIA(plateau, ia);
+        }
+        if (listCarte2.contains(listCarte2.get(choixAleatoire))) {
+            this.pouvoirCarteIA(plateau, listCarte2.get(choixAleatoire) ,listCarte2.get(choixAleatoire).getNumCarte(),ia);
+            System.out.println("Carte IA: " +choixAleatoire +"" );
+
+        }
+
+    }
+
+    public void pouvoirCarteIA(Plateau plateau, Carte carte,int idCarte, IA ia) {
+
+        carte.effetCarteIA(idCarte,ia, plateau,this);
     }
 
 
@@ -279,6 +310,7 @@ public class Jeu {
         int a=((plateau.getTailleTab()+1)/2)-plateau.getPlaceMur();
         System.out.println("a:   "+a);
         if (nbManches>1) {
+            melanger();
             plateau.setTailleTab(plateau.getTailleTab() - 2);
             System.out.println("avant :     " + plateau.getPlaceMur());
             plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1) - a);
