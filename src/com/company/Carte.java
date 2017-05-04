@@ -60,7 +60,7 @@ public class Carte {
             numCarte = nb;
             if (numCarte == 1) {
                 System.out.println("Mutisme");
-                joueur.setPuissanceCoup(i);
+                jeu.getListJoueur().get(i).setPuissanceCoup(0);
                 System.out.println(joueur.getPuissanceCoup());
                 break;
             } else if (numCarte == 2) {
