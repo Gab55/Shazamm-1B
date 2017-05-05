@@ -6,6 +6,9 @@ import java.util.*;
 /**
  * Created by Gaby on 24/02/2017.
  */
+
+// CLASSE OU TOUTES LES ACTIONS VONT SE FAIRE
+
 public class Jeu {
 
         private ArrayList<Joueur> listJoueur;
@@ -108,12 +111,13 @@ public class Jeu {
                 listHumain.get(0).setPuissanceCoup(puissance); // on modifie la variable du joueur humain PuissanceCoup est qui va prendre la valeur d'entrée du scanner
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance); //  on modifie la variable des points de mana (ou d'action) l'opération est = > Point de Mana - puissance entrée par le joueur par le scanner
                 listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoup()+listHumain.get(0).getTotalPuissanceCoupHumain()); // total de tout les coups du joueur physique, cela va nous permettre de faire "apprendre l'IA"
+                // pour le calcul d'une meilleurs probablité d'intervale de coups
                 choixCarte(plateau,humain); // on appel la méthode choixCarte qui va permettre au joueur de choisir une carte
                 System.out.println(" Puissance du coup " + puissance); // on affiche la puissance du coup à l'écran
                 System.out.println(" Puissance TOTAL des coups " + listHumain.get(0).getTotalPuissanceCoupHumain()); // on affiche la puissanceTotal des coups à l'écran
                 System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana"); // on affiche points de mana qui reste à l'écran
                 System.out.println("");
-                nbTour+=1;
+                nbTour+=1; // on ajoute +1 à la variable nbTour cela va nous permettre de faire apprendre l'IA pour le calcul d'une meilleurs probablité d'intervale de coups
 
             }
 
@@ -123,15 +127,19 @@ public class Jeu {
     }
 
     // Méthode de création du comportement de l'IA qui aura un comportement maximisant pour l'IA et minimisant pour le joueur "Humain"
+    // Elle se base sur les coups de joueurs
+    // dans un premier temps elle va se baser sur un unique coup pour lui permettre de jouer en fonction du coup mais aussi en fonction de la mana qui reste au joueur
+    // puis par la suite elle sera capable de caculer un intervalle maximisant pour elle
 
     public void choixPuissanceIA(Plateau plateau, IA ia){
         int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
         int puissanceMiniIA =1; // la mise minimum de l'IA
         int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
-        int probaCoupHumain = listHumain.get(0).getTotalPuissanceCoupHumain()/nbTour;
+        int probaCoupHumain = listHumain.get(0).getTotalPuissanceCoupHumain()/nbTour; // a pour but de calculer un intervale pour permettre potentiellement à l'IA de connaitre un meilleurs intervalle de meilleurs coups
 
         // on va donner une chance au joueur humain, bien entendu l'IA cherche toujour à maximiser ces coups
-        if (nbTour==1) {
+        if (nbTour==1) { // si le nombre de tour est égale à 1
+            // on ne connait pas le encore plusieurs coups fait par le joueur alors on garde comme intervalle puissanceMiniIA et puissanceH (qui correspond au coup du joueur)
             if (listHumain.get(0).getPointMana() <= 40) {
                 fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 4);
 
@@ -144,28 +152,36 @@ public class Jeu {
             } else if (listHumain.get(0).getPointMana() <= 10) {
                 fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 1);
             }
-        }else if (nbTour>2){
+        }else if (nbTour>2){ // dés que l'on connait plusieurs coups du joueur alors on va modifier la méthode de calcule de l'IA pour essayer de deviner un intervalle le plus probable grace à une moyenne qui va donc permettre
+            // à l'IA d'apprendre en fonction des coups du joueur
+            //nouvelle méthode de calcule d'un intervalle grace à une moyenne des différents coups
             fonctionIA = probaCoupHumain + (int) (Math.random() * (puissanceH - probaCoupHumain) + 3);
             System.out.println("probaCoupHumain " +fonctionIA);
-            System.out.println("fonctionIA = probaCoupHumain + (int) (Math.random() * (puissanceH - probaCoupHumain) + 3);");
         }
+
+        // ici il s'agit des mêmes conditions de jeu pour l'IA que pour le joueur en effet aucune triche, même pour l'IA
+
         System.out.println("IA à vous !");
-        for (int i=0; i<listIA.size();i++) {
+        for (int i=0; i<listIA.size();i++) { // parcours de la liste de l'IA
+            // condition si l'IA na plus de points de mana
             if (listIA.get(0).getPointMana()==0){
                 FinManche(plateau);
                 System.out.println(" l'IA "+listIA.get(0).getNomJoueur()+" a plus de mana, fin du tour");
             }
-
+            //condition si pointMana est <= à 0
             if ((listIA.get(0).getPointMana()<=0)){ // Condition si IA a plus de points de mana
                 FinManche(plateau);
                 System.out.println(" Joueur "+listIA.get(i).getNomJoueur()+" a perdu la manche");
                 System.out.println("Nouveau tour");
                 break;
+                //condition si l'ia mise plus que le nombre de point mana
             } else if (fonctionIA > listIA.get(i).getPointMana()) {
                 choixPuissanceIA(plateau,ia);
                 break;
             }
+            // si aucunes autres conditions est vérifiées et DONC que le déroulement est bon
             else {
+
                 listIA.get(0).setPuissanceCoup(fonctionIA);
                 listIA.get(0).setPointMana(listIA.get(0).getPointMana() - fonctionIA);
                 choixCarteIA(plateau, ia);
@@ -180,30 +196,35 @@ public class Jeu {
     }
 
 
+    // cette méthode va permettre de modifier le tableau de jeu en fonction des résultats entre l'ia et le joueurs
+
     public void attaquer(Plateau plateau,  Humain humain, IA ia) {
+        // on appel les méthodes pour choisir la mise des coups par le joueur et l'IA
         this.choixPuissanceHumain(plateau, humain);
         this.choixPuissanceIA(plateau, ia);
+        // on va comparer les puissances de l'ia et du joueur
         if (listHumain.get(0).getPuissanceCoup() < listIA.get(0).getPuissanceCoup()) {
-            System.out.println("Pas assez fort HUMAIN le " + listIA.get(0).getNomJoueur() + " gagne le tour (IA) J2 ");
-            plateau.setPlaceMur(plateau.getPlaceMur() - 1);
+            System.out.println("Pas assez fort HUMAIN l'IA gagne le tour (J2) "); //
+            plateau.setPlaceMur(plateau.getPlaceMur() - 1); // on déplace le mur en fonction du gagnant
             plateau.plateauBase.put("m", plateau.getPlaceMur());
 
-            if (plateau.getPlaceJ1() >= plateau.getPlaceMur()) {
+            if (plateau.getPlaceJ1() >= plateau.getPlaceMur()) { // condition pour gagner la manche en fonction ou se trouve le mur
                 System.out.println("Bien joué IA");
                 System.out.println("FIN DE LA MANCHE !!!! ");
-                System.out.println(listIA.get(0).getNomJoueur() + " gagne la manche (IA) J2 ");
+                System.out.println("l'IA gagne la manche (IA) J2 ");
                 System.out.println("Nombre de manches " + nbManches);
                 System.out.println("Taille tab " + plateau.getTailleTab());
-                FinManche(plateau);
+                FinManche(plateau); // on appel la méthode FIN de manche
                 nbManches+=1;
             }
-
+            // condition si le joueurs tombe dans la lave
             if (plateau.getPlaceJ1() == 0) {     // Condition si J1 est à 0
                 System.out.println("Fin du game");
 
             }
 
             //Attaque IA pas assez forte
+            // Même condition que pour l'IA mais cette fois-ci pour le joueur
         } else if (listHumain.get(0).getPuissanceCoup() > listIA.get(0).getPuissanceCoup()) {
             System.out.println("Pas assez fort IA le " + listHumain.get(0).getNomJoueur() + " gagne le tour (HUMAIN) J1 ");
             plateau.setPlaceMur(plateau.getPlaceMur() + 1);
@@ -216,15 +237,17 @@ public class Jeu {
                 FinManche(plateau);
                 nbManches+=1;
             }
-            if (plateau.getPlaceJ2() == plateau.getTailleTab()) {     // Condition si J2 est au bout du plateau droit
+            //condition si l'IA tombe à l'eau
+            if (plateau.getPlaceJ2() >= plateau.getTailleTab()) {     // Condition si J2 est au bout du plateau droit
                 System.out.println("Fin du game");
 
             }
-
+            // condition si l'IA et le joueur on la même puissance d'attaque
         } else {
 
             System.out.println(" Même puissance pour les deux joueurs");
         }
+        // on affiche le plateau de jeu
         Enumeration enumeration2 = plateau.plateauBase.elements();
         while (enumeration2.hasMoreElements()) {
             System.out.println("Résultat de la fin du tour " + enumeration2.nextElement());
@@ -232,15 +255,16 @@ public class Jeu {
         }
     }
 
-
+    // méthode qui va permettre de choisir une carte pour le joueur
     public void choixCarte(Plateau plateau,  Humain humain){
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);  // scanner qui permet une entrée
         System.out.println("Saisissez une carte entre 0 et 4 : ");
         int choix = sc.nextInt();
-        if (choix>4){
+        if (choix>4){ // l'entrée ne peut pas etre plus grande que 4 (le nombre de carte est de 5)
             System.out.println("Choix invalide recommencez");
-            this.choixCarte(plateau, humain);
+            this.choixCarte(plateau, humain); // on relance la méthode
         }
+        // on vérifie que la liste contient l'entrée ET si oui alors on appel la méthode pouvoirCarte
         if (listCarte.contains(listCarte.get(choix))) {
             this.pouvoirCarte(plateau, listCarte.get(choix) ,listCarte.get(choix).getNumCarte(),humain);
 
@@ -248,21 +272,23 @@ public class Jeu {
 
     }
 
+    //méthode qui permet à une carte d'avoir un effet pour le joueur humain
     public void pouvoirCarte(Plateau plateau, Carte carte,int idCarte, Humain humain) {
-
         carte.effetCarte(idCarte,humain, plateau,this);
     }
 
-
+    // meme chose que pour le joueur humain SAUF que le choix de la carte va se faire de manière aléatoire
     public void choixCarteIA(Plateau plateau, IA ia){
         Random random = new Random();
         int min = 0;
         int max = 4;
         int choixAleatoire = random.nextInt(max-min +1)+min;
+        // condition si le choix est supérieur à 4
         if (choixAleatoire>4){
             System.out.println("Choix invalide recommencez");
             this.choixCarteIA(plateau, ia);
         }
+        // on vérifie que la liste contient l'entrée ET si oui alors on appel la méthode pouvoirCarte
         if (listCarte2.contains(listCarte2.get(choixAleatoire))) {
             this.pouvoirCarteIA(plateau, listCarte2.get(choixAleatoire) ,listCarte2.get(choixAleatoire).getNumCarte(),ia);
             System.out.println("Carte IA: " +choixAleatoire +"" );
@@ -270,16 +296,12 @@ public class Jeu {
         }
 
     }
-
+    //méthode qui permet à une carte d'avoir un effet pour le joueur IA
     public void pouvoirCarteIA(Plateau plateau, Carte carte,int idCarte, IA ia) {
-
         carte.effetCarteIA(idCarte,ia, plateau,this);
     }
 
-
-
-
-
+    // permet d'afficher les cartes
     public void superPaquet(){
 
         for (int i = 0; i < 1; i++) {
@@ -292,7 +314,7 @@ public class Jeu {
 
     }
 
-
+    // permet de mélanger les cartes dans les listes
     public void melanger() {
         for (int i = 0; i < 50; i++) {
             Collections.shuffle(listCarte);
@@ -301,6 +323,7 @@ public class Jeu {
         }
     }
 
+/*
     public void couleurJoueur(){
         Random ra = new Random();
         Boolean coulVert= false;
@@ -319,25 +342,28 @@ public class Jeu {
             System.out.println("Sorcier " + listJoueur.get(1).getNomJoueur() + " est le sorcier rouge");
         }
     }
+*/
 
-
+    // cette méthode va permettre de faire la gestion de fin de tours (mana, déplacement de joueurs ...)
     public void FinManche(Plateau plateau){
-        listHumain.get(0).setPointMana(50);
+        listHumain.get(0).setPointMana(50); // on donne 50 points de mana au joueur Humain
         System.out.println("Joueur "+listHumain.get(0).getNomJoueur()+" a "+listHumain.get(0).getPointMana()+" points de mana");
-        listIA.get(0).setPointMana(50);
+        listIA.get(0).setPointMana(50); // on donne 50 points de mana a l'IA
         System.out.println("Joueur "+listIA.get(0).getNomJoueur()+" a "+listIA.get(0).getPointMana()+" points de mana");
+        //a partir d'ici on va gerer la déplacement des joueurs mais aussi du mur
         int a=((plateau.getTailleTab()+1)/2)-plateau.getPlaceMur();
         System.out.println("a:   "+a);
         if (nbManches>1) {
-            listHumain.get(0).setTotalPuissanceCoupHumain(0);
+            listHumain.get(0).setTotalPuissanceCoupHumain(0); // on remet à 0 la puissance total des coup du joueur humain
             nbTour=1;
-            melanger();
-            plateau.setTailleTab(plateau.getTailleTab() - 2);
-            System.out.println("avant :     " + plateau.getPlaceMur());
-            plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1) - a);
-            System.out.println("apres :     " + plateau.getPlaceMur());
-            plateau.setPlaceJ1(plateau.getPlaceMur() - 3);
-            plateau.setPlaceJ2(plateau.getPlaceMur() + 3);
+            melanger(); // on mélange de nouveau les cartes
+            plateau.setTailleTab(plateau.getTailleTab() - 2); // on retire 2 cases au plateau
+            System.out.println("avant :     " + plateau.getPlaceMur()); // place du mur avant
+            plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1) - a); // on change la place du mur
+            System.out.println("apres :     " + plateau.getPlaceMur()); // place du mur après
+            plateau.setPlaceJ1(plateau.getPlaceMur() - 3); // on change la place du joueur 1
+            plateau.setPlaceJ2(plateau.getPlaceMur() + 3); // on change la place du joueur 2
+            // on place les résultat dans notre HashTable
             plateau.plateauBase.put("J1", plateau.getPlaceJ1());
             plateau.plateauBase.put("m", plateau.getPlaceMur());
             plateau.plateauBase.put("J2", plateau.getPlaceJ2());
@@ -348,6 +374,8 @@ public class Jeu {
         }
 
     }
+
+    ///////////////////////////// Getter Setter /////////////////////////////////
 
 
     public ArrayList<Joueur> getListJoueur() {
@@ -390,6 +418,3 @@ public class Jeu {
         this.listCarte2 = listCarte2;
     }
 }
-
-
-

@@ -5,17 +5,23 @@ import java.util.Hashtable;
 /**
  * Created by Gaby on 20/03/2017.
  */
+
+// CLASSE QUI VA PERMETTRE LE GESTION DU PLATEAU DE JEU
+
 public class Plateau {
-    private int tailleTab=19;
+    private int tailleTab=19; // taille total du plateau
     private int tabLave=19;
     Hashtable plateauBase = new Hashtable(tailleTab);
-    private int placeMur = tailleTab/2+1;
-    private int placeJ1 = placeMur-3;
-    private int placeJ2= placeMur+3;
+    private int placeMur = tailleTab/2+1; // opération qui va permettre de connaitre la place du mur même après modification du plateau
+    private int placeJ1 = placeMur-3; // opération qui va permettre de connaitre la place du J1 même après modification du plateau
+    private int placeJ2= placeMur+3; // opération qui va permettre de connaitre la place du J1 même après modification du plateau
 
     public Plateau() {
 
     }
+
+    /////////////////////////// Getter et Setter //////////////////////////////
+
 
     public Hashtable getPlateauBase() {
         return plateauBase;

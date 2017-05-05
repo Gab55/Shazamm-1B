@@ -5,17 +5,24 @@ import java.util.Scanner;
 /**
  * Created by Gaby on 22/02/2017.
  */
+
+// CLASSE MERE DE LA CLASSE HUMAIN ET IA
+
 public class Joueur {
     private String nomJoueur;
     private int numJoueur;
     private int pointMana=50;
     private int puissanceCoup;
 
+    ///////////////////// CONSTRUCTEUR /////////////////////////////////
+
     public Joueur(String nomJoueur, int numJoueur, int pointMana) {
         this.nomJoueur = nomJoueur;
         this.numJoueur = numJoueur;
         this.pointMana = pointMana;
     }
+
+    //////////////////// GETTER ET SETTER ///////////////////////////////
 
     public String getNomJoueur() {
         return nomJoueur;

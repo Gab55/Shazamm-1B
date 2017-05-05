@@ -10,11 +10,14 @@ import java.util.Scanner;
 /**
  * Created by Gaby on 24/02/2017.
  */
+
+// CLASSE OU ON VA FAIRE GERER LES CARTES ET LEURS COMPORTEMENTS
 public class Carte {
 
     private int numCarte;
     private String nomCarte;
 
+    ///////////////////// CONSTRUCTEUR /////////////////////////////////
 
 
     public Carte(int numCarte, String nomCarte) {
@@ -55,6 +58,7 @@ public class Carte {
         return ""+numCarte;
     }
 
+    // Méthode pour donner les effets à chaque cartes pour le paquets de cartes pour le joueur humain
     public void effetCarte(int nb, Humain humain,Plateau plateau, Jeu jeu) {
         for (int i = 0; i < jeu.getListJoueur().size(); i++) {
             numCarte = nb;
@@ -134,6 +138,7 @@ public class Carte {
         }
     }
 
+    // méthode pour donner les effets des cartes pour le paquet cartes de l'ia
     public void effetCarteIA(int nb, IA ia,Plateau plateau, Jeu jeu) {
         for (int i = 0; i < jeu.getListJoueur().size(); i++) {
             numCarte = nb;
@@ -212,6 +217,8 @@ public class Carte {
             }
         }
     }
+
+    //////////////////// GETTER ET SETTER ///////////////////////////////
 
 
     public int getNumCarte() {
