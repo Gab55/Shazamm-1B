@@ -8,19 +8,19 @@ import java.util.*;
  */
 public class Jeu {
 
-    private ArrayList<Joueur> listJoueur;
-    private ArrayList<Humain> listHumain;
-    private ArrayList<IA> listIA;
-    private int nbTour=1;
-    private int nbManches=1;
-    private ArrayList <Carte> listCarte;
-    private ArrayList <Carte> listCarte2;
+        private ArrayList<Joueur> listJoueur;
+        private ArrayList<Humain> listHumain; // liste de joueurs physique
+        private ArrayList<IA> listIA; // liste de joueurs IA
+        private int nbTour=1;
+        private int nbManches=1;
+        private ArrayList <Carte> listCarte; // liste des cartes du joueur physique
+        private ArrayList <Carte> listCarte2; // liste des cartes du joueur IA
 
+        // on initialise le jeu ou on donne les variable
 
     public void debutJeu(){
         this.listCarte=new ArrayList<Carte>();
         this.listCarte2=new ArrayList<Carte>();
-
         this.listJoueur= new ArrayList<Joueur>();
         this.listHumain= new ArrayList<Humain>() ;
         this.listIA= new ArrayList<IA>() ;
@@ -31,79 +31,87 @@ public class Jeu {
         Joueur j= null;
         Humain humain=null;
         IA ia=null;
-        for (int i =1; i<2; i++){
 
-            Scanner sc= new Scanner(System.in);
+        // on va renseigner le nom du joueur physique
+        for (int i =1; i<2; i++){
+            Scanner sc= new Scanner(System.in); // scanner qui permet à l'utilisateur de renter le nom qu'il veut
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
             j = new Joueur(nomJoueur,numJoueur,pointMana);
-            humain= new Humain(nomJoueur,numJoueur,pointMana);
-            ia= new IA(nomJoueur,numJoueur,pointMana);
-            listJoueur.add(j);
-            listHumain.add(humain);
-            listIA.add(ia);
+            humain= new Humain(nomJoueur,numJoueur,pointMana); // création de l'objet humain qui sera un joueur physique
+            ia= new IA(nomJoueur,numJoueur,pointMana);  // création de l'objet humain qui sera une IA
+            listJoueur.add(j); // on ajoute un joueur à la liste listJoueur
+            listHumain.add(humain); // on ajoute un objet humain dans la liste listHumain
+            listIA.add(ia);// on ajoute un objet IA dans la liste listIA
             numJoueur+=1;
         }
-        System.out.println("Liste joueur Humain "+listHumain+" Liste joueur IA "+listIA);
-        Plateau p= new Plateau();
 
-        init();
-        superPaquet();
 
-        while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) {
-            attaquer(p,humain,ia);
+        System.out.println("Liste joueur Humain "+listHumain+" ");
+        Plateau p= new Plateau(); // on initialise un objet plateau (le plateau de jeu)
+
+        init(); // appel de la méthode init
+        superPaquet(); // appel de la méthode superPaquet
+
+        while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) { // condition d'arret du jeu ou du programme
+            attaquer(p,humain,ia); // appel de la méthode attaquer
         }
 
 
     }
 
+    // grace à la méthode init nous allons créer des jeux de cartes, un pour le joueur humain et l'autre pour l'IA
+    // Les deux joueurs auront des paquets différent
     public void init() {
-        for (int i =1; i<14;i++){
-            Carte c =new Carte(i," ");
-            this.listCarte.add(c);
-            melanger();
-        }for (int j =1; j<14;j++){
+        for (int i =1; i<14;i++){               // boucle qui permet d'aller jusqu'a 14 qui est le nombre de cartes total par joueur
+            Carte c =new Carte(i," "); // création du l'objet carte qui va prendre un numéro différent en fonction de la variable i qui se trouve dans la boucle for
+            this.listCarte.add(c);              // on ajoute les objets cartes dans la liste qui va correspondre à la liste des cartes du joueur
+            melanger();                         // on fait appel à la la méthode mélanger
+        }
+                                            // Même instruction que la première boucle, mais le lieu de stockage sera différent
+        for (int j =1; j<14;j++){
             Carte c =new Carte(j," ");
-            this.listCarte2.add(c);
-            melanger();
+            this.listCarte2.add(c);         // on ajoute les objets cartes dans la liste qui va correspondre à la liste des cartes de l'IA
+            melanger();                     // on fait appel à la la méthode mélanger
         }
     }
 
+    // méthode qui va permetre au joueus physique de donner la mise qui va donc correspondre à la puissance de son attaque
 
     public void choixPuissanceHumain(Plateau plateau,  Humain humain){
         System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
-        for (int i=0; i<listHumain.size();i++) {
-            superPaquet();
-            if (listHumain.get(0).getPointMana()==0){
-                FinManche(plateau);
-                System.out.println(" Joueur "+listHumain.get(0).getNomJoueur()+" a plus de mana, fin du tour");
+        for (int i=0; i<listHumain.size();i++) { // on parcours la liste de joueurs humain
+            superPaquet(); // on affiche le paquet avec les cartes disponible pour le joueur
+            // à partir d'ici les conditions vont faire en sorte que le joueur ne puisse pas tricher
+            if (listHumain.get(0).getPointMana()==0){   // Condition pour vérifier que le joueur à toujours des points d'action (ici de points de mana) de disponible
+                FinManche(plateau); //si la condition est vrai alors on fait appel à la méthode Fin de manche
+                System.out.println(" Joueur "+listHumain.get(0).getNomJoueur()+" a plus de mana, fin du tour"); // on affiche le résultat
             }
-
+            // on informe que au joueur qu'il s'agit de son tour
             System.out.println("Joueur " + listHumain.get(0).getNomJoueur() + " à vous !");
-            Scanner sc = new Scanner(System.in);
+            Scanner sc = new Scanner(System.in);  // Nouveau scanner qui permet au joueur de donner la puissance voulut à son sort
             System.out.println("Saisissez un entier : ");
-            int puissance = sc.nextInt();
+            int puissance = sc.nextInt(); // entrée du scanner qui sera donc un int
 
-            if ((listHumain.get(0).getPointMana()<=0)){ // Condition si J1 a plus de points de mana
-                FinManche(plateau);
-                System.out.println(" Joueur HUMAIN "+listHumain.get(0).getNomJoueur()+" a perdu la manche");
-                System.out.println("Nouveau tour");
-                break;
-            } else if (puissance > listHumain.get(0).getPointMana()) {
-                System.out.println("Pas possible recommencez");
-                System.out.println("Points de mana Joueur "+listHumain.get(0).getPointMana());
-                choixPuissanceHumain(plateau,humain);
+            if ((listHumain.get(0).getPointMana()<=0)){ // Condition si le joueur n'a plus de points de mana
+                FinManche(plateau); // on appel la méthode FinManche
+                System.out.println(" Joueur HUMAIN "+listHumain.get(0).getNomJoueur()+" a perdu la manche"); // on affiche le résultat à l'écran
+                System.out.println("Nouveau tour"); // on affiche le résultat à l'écran
+                break; // on arréte la boucle si vérifié
+            } else if (puissance > listHumain.get(0).getPointMana()) { // condition si la puissance est supérieur aux points de mana (ou d'action) disponible
+                System.out.println("Pas possible recommencez");  // on affiche le résultat à l'écran
+                System.out.println("Points de mana Joueur "+listHumain.get(0).getPointMana());  // on affiche le résultat à l'écran (point de mana disponible)
+                choixPuissanceHumain(plateau,humain); // on rappel la méthode choixPuissanceHumain pour que le joueur puisse recommencer la mise
                 break;
             }
-            else {
-                listHumain.get(0).setPuissanceCoup(puissance);
-                listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance);
-                listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoup()+listHumain.get(0).getTotalPuissanceCoupHumain());
-                choixCarte(plateau,humain);
-                System.out.println(" Puissance du coup " + puissance);
-                System.out.println(" Puissance TOTAL des coups " + listHumain.get(0).getTotalPuissanceCoupHumain());
-                System.out.println(" la puissance du coup est "+listHumain.get(0).getPuissanceCoup());
-                System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana");
+            else { // si aucunes des conditions n'est validées et DONC que le jeu se déroule normalement
+                listHumain.get(0).setPuissanceCoup(puissance); // on modifie la variable du joueur humain PuissanceCoup est qui va prendre la valeur d'entrée du scanner
+                listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance); //  on modifie la variable des points de mana (ou d'action) l'opération est = > Point de Mana - puissance entrée par le joueur par le scanner
+                listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoup()+listHumain.get(0).getTotalPuissanceCoupHumain()); // total de tout les coups du joueur physique, cela va nous permettre de faire "apprendre l'IA"
+                choixCarte(plateau,humain); // on appel la méthode choixCarte qui va permettre au joueur de choisir une carte
+                System.out.println(" Puissance du coup " + puissance); // on affiche la puissance du coup à l'écran
+                System.out.println(" Puissance TOTAL des coups " + listHumain.get(0).getTotalPuissanceCoupHumain()); // on affiche la puissanceTotal des coups à l'écran
+                System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana"); // on affiche points de mana qui reste à l'écran
                 System.out.println("");
                 nbTour+=1;
 
@@ -114,7 +122,7 @@ public class Jeu {
 
     }
 
-    // Méthode de création du comportement de l'IA qui aura un comportement maximisant pour elle et minimisant pour le joueur "Humain"
+    // Méthode de création du comportement de l'IA qui aura un comportement maximisant pour l'IA et minimisant pour le joueur "Humain"
 
     public void choixPuissanceIA(Plateau plateau, IA ia){
         int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
