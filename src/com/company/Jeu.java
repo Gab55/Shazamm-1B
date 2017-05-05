@@ -11,6 +11,7 @@ public class Jeu {
     private ArrayList<Joueur> listJoueur;
     private ArrayList<Humain> listHumain;
     private ArrayList<IA> listIA;
+    private int nbTour=1;
     private int nbManches=1;
     private ArrayList <Carte> listCarte;
     private ArrayList <Carte> listCarte2;
@@ -97,12 +98,14 @@ public class Jeu {
             else {
                 listHumain.get(0).setPuissanceCoup(puissance);
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance);
+                listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoup()+listHumain.get(0).getTotalPuissanceCoupHumain());
                 choixCarte(plateau,humain);
                 System.out.println(" Puissance du coup " + puissance);
-
+                System.out.println(" Puissance TOTAL des coups " + listHumain.get(0).getTotalPuissanceCoupHumain());
                 System.out.println(" la puissance du coup est "+listHumain.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listHumain.get(0).getPointMana() + " points de Mana");
                 System.out.println("");
+                nbTour+=1;
 
             }
 
@@ -117,19 +120,26 @@ public class Jeu {
         int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
         int puissanceMiniIA =1; // la mise minimum de l'IA
         int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
+        int probaCoupHumain = listHumain.get(0).getTotalPuissanceCoupHumain()/nbTour;
 
         // on va donner une chance au joueur humain, bien entendu l'IA cherche toujour à maximiser ces coups
-        if (listHumain.get(0).getPointMana()<=40){
-            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +4);
+        if (nbTour==1) {
+            if (listHumain.get(0).getPointMana() <= 40) {
+                fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 4);
 
-        }else if (listHumain.get(0).getPointMana()<=30){
-            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +3);
+            } else if (listHumain.get(0).getPointMana() <= 30) {
+                fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 3);
 
-        }else if (listHumain.get(0).getPointMana()<=20){
-            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +2);
+            } else if (listHumain.get(0).getPointMana() <= 20) {
+                fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 2);
 
-        }else if (listHumain.get(0).getPointMana()<=10){
-            fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +1);
+            } else if (listHumain.get(0).getPointMana() <= 10) {
+                fonctionIA = puissanceMiniIA + (int) (Math.random() * (puissanceH - puissanceMiniIA) + 1);
+            }
+        }else if (nbTour>2){
+            fonctionIA = probaCoupHumain + (int) (Math.random() * (puissanceH - probaCoupHumain) + 3);
+            System.out.println("probaCoupHumain " +fonctionIA);
+            System.out.println("fonctionIA = probaCoupHumain + (int) (Math.random() * (puissanceH - probaCoupHumain) + 3);");
         }
         System.out.println("IA à vous !");
         for (int i=0; i<listIA.size();i++) {
@@ -155,6 +165,7 @@ public class Jeu {
                 System.out.println(" la puissance du coup est l'IA "+listIA.get(0).getPuissanceCoup());
                 System.out.println("il reste " + listIA.get(0).getPointMana() + " points de Mana à l'IA");
                 System.out.println("");
+
 
             }
         }
@@ -310,6 +321,8 @@ public class Jeu {
         int a=((plateau.getTailleTab()+1)/2)-plateau.getPlaceMur();
         System.out.println("a:   "+a);
         if (nbManches>1) {
+            listHumain.get(0).setTotalPuissanceCoupHumain(0);
+            nbTour=1;
             melanger();
             plateau.setTailleTab(plateau.getTailleTab() - 2);
             System.out.println("avant :     " + plateau.getPlaceMur());
