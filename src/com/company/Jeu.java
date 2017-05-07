@@ -34,6 +34,10 @@ public class Jeu {
         Joueur j= null;
         Humain humain=null;
         IA ia=null;
+        String host = "jdbc:mysql://localhost:3306/shazamm";
+        String username = "root";
+        String password = "";
+        BDD bdd = new BDD(host, username, password);
 
         // on va renseigner le nom du joueur physique
         for (int i =1; i<2; i++){
@@ -49,10 +53,9 @@ public class Jeu {
             numJoueur+=1;
         }
 
-
+        infoBDD(bdd);
         System.out.println("Liste joueur Humain "+listHumain+" ");
         Plateau p= new Plateau(); // on initialise un objet plateau (le plateau de jeu)
-
         init(); // appel de la méthode init
         superPaquet(); // appel de la méthode superPaquet
 
@@ -62,6 +65,23 @@ public class Jeu {
 
 
     }
+
+
+
+
+public void infoBDD(BDD bdd) {
+    ArrayList<String> l = bdd.getTuples("SELECT nomHumain FROM shazamm");
+    System.out.println("Liste des joueurs deja presents dans la base :");
+    System.out.println(l);
+
+    for (int j = 0; j < getListHumain().size(); j++) { //inserer les internautes du fichier .csv dans la base
+        //voir cours 13 pour la syntaxe des requêtes SQL d'insertion de tuples : INSERT INTO
+        String query = "INSERT INTO shazamm(nomHumain)" + "VALUES ('"+getListHumain().get(0).getNomJoueur()+"')";
+        bdd.insertTuples(query);
+    }
+}
+
+
 
     // grace à la méthode init nous allons créer des jeux de cartes, un pour le joueur humain et l'autre pour l'IA
     // Les deux joueurs auront des paquets différent
