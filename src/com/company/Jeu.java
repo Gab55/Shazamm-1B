@@ -9,16 +9,16 @@ import java.util.*;
 
 public class Jeu {
 
-        private ArrayList<Joueur> listJoueur;
-        private ArrayList<Humain> listHumain; // liste de joueurs physique
-        private ArrayList<IA> listIA; // liste de joueurs IA
-        private int nbTour=1;
-        private int nbCase;
-        private int nbManches=1;
-        private ArrayList <Carte> listCarte; // liste des cartes du joueur physique
-        private ArrayList <Carte> listCarte2; // liste des cartes du joueur IA
+    private ArrayList<Joueur> listJoueur;
+    private ArrayList<Humain> listHumain; // liste de joueurs physique
+    private ArrayList<IA> listIA; // liste de joueurs IA
+    private int nbTour=1;
+    private int nbCase;
+    private int nbManches=1;
+    private ArrayList <Carte> listCarte; // liste des cartes du joueur physique
+    private ArrayList <Carte> listCarte2; // liste des cartes du joueur IA
 
-        // on initialise le jeu ou on donne les variable
+    // on initialise le jeu ou on donne les variable
 
     public void debutJeu(){
         this.listCarte=new ArrayList<Carte>();
@@ -46,13 +46,13 @@ public class Jeu {
             //j = new Joueur(nomJoueur,numJoueur,pointMana);
             humain= new Humain(nomJoueur,numJoueur,pointMana); // création de l'objet humain qui sera un joueur physique
             ia= new IA(nomJoueur,numJoueur,pointMana);  // création de l'objet humain qui sera une IA
-          //  listJoueur.add(j); // on ajoute un joueur à la liste listJoueur
+            //  listJoueur.add(j); // on ajoute un joueur à la liste listJoueur
             listHumain.add(humain); // on ajoute un objet humain dans la liste listHumain
             listIA.add(ia);// on ajoute un objet IA dans la liste listIA
             numJoueur+=1;
         }
 
-        infoBDD(bdd);
+       // infoBDD(bdd);
         Plateau p= new Plateau(); // on initialise un objet plateau (le plateau de jeu)
         init(); // appel de la méthode init
         superPaquet(); // appel de la méthode superPaquet
@@ -67,17 +67,17 @@ public class Jeu {
 
 
 
-public void infoBDD(BDD bdd) {
-    ArrayList<String> l = bdd.getTuples("SELECT nomHumain FROM shazamm");
-    System.out.println("Liste des joueurs deja presents dans la base :");
-    System.out.println(l);
+    public void infoBDD(BDD bdd) {
+        ArrayList<String> l = bdd.getTuples("SELECT nomHumain FROM shazamm");
+        System.out.println("Liste des joueurs deja presents dans la base :");
+        System.out.println(l);
 
-    for (int j = 0; j < getListHumain().size(); j++) { //inserer les internautes du fichier .csv dans la base
-        //voir cours 13 pour la syntaxe des requêtes SQL d'insertion de tuples : INSERT INTO
-        String query = "INSERT INTO shazamm(nomHumain)" + "VALUES ('"+getListHumain().get(0).getNomJoueur()+"')";
-        bdd.insertTuples(query);
+        for (int j = 0; j < getListHumain().size(); j++) { //inserer les internautes du fichier .csv dans la base
+            //voir cours 13 pour la syntaxe des requêtes SQL d'insertion de tuples : INSERT INTO
+            String query = "INSERT INTO shazamm(nomHumain)" + "VALUES ('"+getListHumain().get(0).getNomJoueur()+"')";
+            bdd.insertTuples(query);
+        }
     }
-}
 
 
 
@@ -89,7 +89,7 @@ public void infoBDD(BDD bdd) {
             this.listCarte.add(c);              // on ajoute les objets cartes dans la liste qui va correspondre à la liste des cartes du joueur
             melanger();                         // on fait appel à la la méthode mélanger
         }
-                                            // Même instruction que la première boucle, mais le lieu de stockage sera différent
+        // Même instruction que la première boucle, mais le lieu de stockage sera différent
         for (int j =1; j<14;j++){
             Carte c =new Carte(j," ");
             this.listCarte2.add(c);         // on ajoute les objets cartes dans la liste qui va correspondre à la liste des cartes de l'IA
@@ -233,8 +233,9 @@ public void infoBDD(BDD bdd) {
                 System.out.println("l'IA gagne la manche (IA) J2 ");
                 System.out.println("Nombre de manches " + nbManches);
                 System.out.println("Taille tab " + plateau.getTailleTab());
-                FinManche(plateau); // on appel la méthode FIN de manche
                 nbManches+=1;
+                FinManche(plateau); // on appel la méthode FIN de manche
+
             }
             // condition si le joueurs tombe dans la lave
             if (plateau.getPlaceJ1() == nbCase) {     // Condition si J1 est dans la lave
@@ -248,13 +249,14 @@ public void infoBDD(BDD bdd) {
             System.out.println("Pas assez fort IA le " + listHumain.get(0).getNomJoueur() + " gagne le tour (HUMAIN) J1 ");
             plateau.setPlaceMur(plateau.getPlaceMur() + 1);
             plateau.plateauBase.put("m", plateau.getPlaceMur());
-            if (plateau.getPlaceMur() >= plateau.getPlaceJ2()) {
+            if (plateau.getPlaceMur() <= plateau.getPlaceJ2()) {
                 System.out.println(" Bien joué Humain ");
                 System.out.println("FIN DE LA MANCHE !!!! ");
                 System.out.println(listHumain.get(0).getNomJoueur() + " gagne la manche (HUMAIN) J1");
                 System.out.println("Taille tab " + plateau.getTailleTab());
-                FinManche(plateau);
                 nbManches+=1;
+                FinManche(plateau);
+
 
             }
             //condition si l'IA tombe à l'eau
@@ -377,11 +379,12 @@ public void infoBDD(BDD bdd) {
         System.out.println("nombre de manche: "+nbManches);
         int a=((plateau.getTailleTab()+1)/2)-plateau.getPlaceMur();
         if (nbManches>1) {
+            nbTour=1;
+            nbCase++;
             listHumain.get(0).setTotalPuissanceCoupHumain(0); // on remet à 0 la puissance total des coup du joueur humain
             nbManches=1;
             System.out.println("nombre de manche: "+nbManches);
-            nbTour=1;
-            nbCase++;
+
             melanger(); // on mélange de nouveau les cartes
             plateau.setTailleTab(plateau.getTailleTab() - 2); // on retire 2 cases au plateau
             System.out.println("avant :     " + plateau.getPlaceMur()); // place du mur avant
