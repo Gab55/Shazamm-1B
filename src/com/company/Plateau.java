@@ -8,7 +8,7 @@ import java.util.Hashtable;
 
 public class Plateau {
     private int tailleTab=19; // taille total du plateau
-    private int tabLave=19;
+
     Hashtable plateauBase = new Hashtable(tailleTab);
     private int placeMur = tailleTab/2+1; // opération qui va permettre de connaitre la place du mur même après modification du plateau
     private int placeJ1 = placeMur-3; // opération qui va permettre de connaitre la place du J1 même après modification du plateau
@@ -61,11 +61,5 @@ public class Plateau {
         this.placeJ2 = placeJ2;
     }
 
-    public int getTabLave() {
-        return tabLave;
-    }
-
-    public void setTabLave(int tabLave) {
-        this.tabLave = tabLave;
-    }
+    
 }
