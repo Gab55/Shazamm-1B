@@ -64,8 +64,8 @@ public class Carte {
             numCarte = nb;
             if (numCarte == 1) {
                 System.out.println("Mutisme");
-                jeu.getListHumain().get(i).setPuissanceCoup(0);
-                System.out.println(humain.getPuissanceCoup());
+                jeu.getListHumain().get(i).setPuissanceCoupHumain(0);
+                System.out.println(humain.getPuissanceCoupHumain());
                 break;
             } else if (numCarte == 2) {
                 System.out.println("carte Clone");
@@ -89,16 +89,16 @@ public class Carte {
                 if ((choix2 > 5) || (choix2 < 0)) {
                     System.out.println(" Impossible");
                 } else {
-                    jeu.getListHumain().get(i).setPuissanceCoup(choix2);
+                    jeu.getListHumain().get(i).setPuissanceCoupHumain(choix2);
                 }
                 break;
             } else if (numCarte == 7) {
                 System.out.println("carte Boost attaque");
-                jeu.getListHumain().get(i).setPuissanceCoup(jeu.getListHumain().get(i).getPuissanceCoup() + 7);
+                jeu.getListHumain().get(i).setPuissanceCoupHumain(jeu.getListHumain().get(i).getPuissanceCoupHumain() + 7);
                 break;
             } else if (numCarte == 8) {
                 System.out.println("carte Double dose");
-                jeu.getListHumain().get(i).setPuissanceCoup(jeu.getListHumain().get(i).getPuissanceCoup() * 2);
+                jeu.getListHumain().get(i).setPuissanceCoupHumain(jeu.getListHumain().get(i).getPuissanceCoupHumain() * 2);
             } else if (numCarte == 9) {
                 System.out.println("carte Qui perd gagne");
                 if (jeu.getListHumain().get(i) == jeu.getListHumain().get(0)) {
@@ -129,9 +129,9 @@ public class Carte {
             } else if (numCarte == 14) {
                 System.out.println("carte Aspiration");
                 if (jeu.getListHumain().get(i) == jeu.getListHumain().get(0)) {
-                    jeu.getListHumain().get(0).setPointMana(jeu.getListHumain().get(1).getPuissanceCoup());
+                    jeu.getListHumain().get(0).setPointMana(jeu.getListHumain().get(1).getPuissanceCoupHumain());
                 } else if (jeu.getListHumain().get(i) == jeu.getListHumain().get(1)) {
-                    jeu.getListHumain().get(1).setPointMana(jeu.getListHumain().get(0).getPuissanceCoup());
+                    jeu.getListHumain().get(1).setPointMana(jeu.getListHumain().get(0).getPuissanceCoupHumain());
 
                 }
             }
@@ -144,8 +144,8 @@ public class Carte {
             numCarte = nb;
             if (numCarte == 1) {
                 System.out.println("Mutisme");
-                jeu.getListIA().get(i).setPuissanceCoup(0);
-                System.out.println(ia.getPuissanceCoup());
+                jeu.getListIA().get(i).setPuissanceCoupIA(0);
+                System.out.println(ia.getPuissanceCoupIA());
                 break;
             } else if (numCarte == 2) {
                 System.out.println("carte Clone");
@@ -169,16 +169,16 @@ public class Carte {
                 if ((choix2 > 5) || (choix2 < 0)) {
                     System.out.println(" Impossible");
                 } else {
-                    jeu.getListIA().get(i).setPuissanceCoup(choix2);
+                    jeu.getListIA().get(i).setPuissanceCoupIA(choix2);
                 }
                 break;
             } else if (numCarte == 7) {
                 System.out.println("carte Boost attaque");
-                jeu.getListIA().get(i).setPuissanceCoup(jeu.getListIA().get(i).getPuissanceCoup() + 7);
+                jeu.getListIA().get(i).setPuissanceCoupIA(jeu.getListIA().get(i).getPuissanceCoupIA() + 7);
                 break;
             } else if (numCarte == 8) {
                 System.out.println("carte Double dose");
-                jeu.getListIA().get(i).setPuissanceCoup(jeu.getListIA().get(i).getPuissanceCoup() * 2);
+                jeu.getListIA().get(i).setPuissanceCoupIA(jeu.getListIA().get(i).getPuissanceCoupIA() * 2);
             } else if (numCarte == 9) {
                 System.out.println("carte Qui perd gagne");
                 if (jeu.getListIA().get(i) == jeu.getListIA().get(0)) {
@@ -209,9 +209,9 @@ public class Carte {
             } else if (numCarte == 14) {
                 System.out.println("carte Aspiration");
                 if (jeu.getListIA().get(i) == jeu.getListIA().get(0)) {
-                    jeu.getListIA().get(0).setPointMana(jeu.getListIA().get(1).getPuissanceCoup());
+                    jeu.getListIA().get(0).setPointMana(jeu.getListIA().get(1).getPuissanceCoupIA());
                 } else if (jeu.getListIA().get(i) == jeu.getListIA().get(1)) {
-                    jeu.getListIA().get(1).setPointMana(jeu.getListIA().get(0).getPuissanceCoup());
+                    jeu.getListIA().get(1).setPointMana(jeu.getListIA().get(0).getPuissanceCoupIA());
 
                 }
             }

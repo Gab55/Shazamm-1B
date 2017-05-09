@@ -31,7 +31,7 @@ public class Jeu {
         int pointMana=50;
         String nomJoueur;
         System.out.println("Bienvenue dans le jeu Shazamm !");
-        Joueur j= null;
+        //Joueur j= null;
         Humain humain=null;
         IA ia=null;
         String host = "jdbc:mysql://localhost:3306/shazamm";
@@ -44,10 +44,10 @@ public class Jeu {
             Scanner sc= new Scanner(System.in); // scanner qui permet à l'utilisateur de renter le nom qu'il veut
             System.out.println("Veuillez renseigner le nom du joueur ");
             nomJoueur = sc.nextLine();
-            j = new Joueur(nomJoueur,numJoueur,pointMana);
+            //j = new Joueur(nomJoueur,numJoueur,pointMana);
             humain= new Humain(nomJoueur,numJoueur,pointMana); // création de l'objet humain qui sera un joueur physique
             ia= new IA(nomJoueur,numJoueur,pointMana);  // création de l'objet humain qui sera une IA
-            listJoueur.add(j); // on ajoute un joueur à la liste listJoueur
+          //  listJoueur.add(j); // on ajoute un joueur à la liste listJoueur
             listHumain.add(humain); // on ajoute un objet humain dans la liste listHumain
             listIA.add(ia);// on ajoute un objet IA dans la liste listIA
             numJoueur+=1;
