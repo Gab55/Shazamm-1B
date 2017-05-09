@@ -87,7 +87,7 @@ public class Carte {
                 if ((choix2 > 5) || (choix2 < 0)) {
                     System.out.println(" Impossible");
                 } else {
-                    jeu.getListHumain().get(i).setPuissanceCoupHumain(choix2);
+                    jeu.getListHumain().get(i).setPuissanceCoupHumain(jeu.getListHumain().get(i).getPuissanceCoupHumain()+(choix2));
                 }
                 break;
             } else if (numCarte == 7) {
@@ -162,7 +162,7 @@ public class Carte {
                 if ((choix2 > 5) || (choix2 < 0)) {
                     System.out.println(" Impossible");
                 } else {
-                    jeu.getListIA().get(i).setPuissanceCoupIA(choix2);
+                    jeu.getListIA().get(i).setPuissanceCoupIA(jeu.getListIA().get(i).getPuissanceCoupIA()+(choix2));
                 }
                 break;
             } else if (numCarte == 7) {
