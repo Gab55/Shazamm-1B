@@ -51,14 +51,14 @@ public class Carte {
         } else if (numCarte == 13) {
             return "carte Boost réserve";
         } else if (numCarte == 14) {
-            return "carte Aspiration";
+            return "cart0e Aspiration";
         }
         return ""+numCarte;
     }
 
     // Méthode pour donner les effets à chaque cartes pour le paquets de cartes pour le joueur humain
     public void effetCarte(int nb, Humain humain,Plateau plateau, Jeu jeu) {
-        for (int i = 0; i < jeu.getListJoueur().size(); i++) {
+        for (int i = 0; i < jeu.getListHumain().size(); i++) {
             numCarte = nb;
             if (numCarte == 1) {
                 System.out.println("Mutisme");
@@ -77,7 +77,7 @@ public class Carte {
                 break;
             } else if (numCarte == 5) {
                 System.out.println("carte Milieu");
-                plateau.setPlaceMur(10);
+                plateau.setPlaceMur(plateau.getTailleTab()/2);
                 break;
             } else if (numCarte == 6) {
                 System.out.println("carte Recyclage");
@@ -126,19 +126,14 @@ public class Carte {
                 jeu.getListHumain().get(i).setPointMana(jeu.getListHumain().get(i).getPointMana() + 13);
             } else if (numCarte == 14) {
                 System.out.println("carte Aspiration");
-                if (jeu.getListHumain().get(i) == jeu.getListHumain().get(0)) {
-                    jeu.getListHumain().get(0).setPointMana(jeu.getListHumain().get(1).getPuissanceCoupHumain());
-                } else if (jeu.getListHumain().get(i) == jeu.getListHumain().get(1)) {
-                    jeu.getListHumain().get(1).setPointMana(jeu.getListHumain().get(0).getPuissanceCoupHumain());
-
-                }
+                jeu.getListHumain().get(0).setPointMana(jeu.getListHumain().get(0).getPointMana()+jeu.getListIA().get(0).getPuissanceCoupIA());
             }
         }
     }
 
     // méthode pour donner les effets des cartes pour le paquet cartes de l'ia
     public void effetCarteIA(int nb, IA ia,Plateau plateau, Jeu jeu) {
-        for (int i = 0; i < jeu.getListJoueur().size(); i++) {
+        for (int i = 0; i < jeu.getListIA().size(); i++) {
             numCarte = nb;
             if (numCarte == 1) {
                 System.out.println("Mutisme");
@@ -157,7 +152,7 @@ public class Carte {
                 break;
             } else if (numCarte == 5) {
                 System.out.println("carte Milieu");
-                plateau.setPlaceMur(10);
+                plateau.setPlaceMur(plateau.getTailleTab()/2);
                 break;
             } else if (numCarte == 6) {
                 System.out.println("carte Recyclage");
@@ -206,12 +201,9 @@ public class Carte {
                 jeu.getListIA().get(i).setPointMana(jeu.getListIA().get(i).getPointMana() + 13);
             } else if (numCarte == 14) {
                 System.out.println("carte Aspiration");
-                if (jeu.getListIA().get(i) == jeu.getListIA().get(0)) {
-                    jeu.getListIA().get(0).setPointMana(jeu.getListIA().get(1).getPuissanceCoupIA());
-                } else if (jeu.getListIA().get(i) == jeu.getListIA().get(1)) {
-                    jeu.getListIA().get(1).setPointMana(jeu.getListIA().get(0).getPuissanceCoupIA());
+                jeu.getListIA().get(0).setPointMana(jeu.getListIA().get(0).getPointMana()+jeu.getListHumain().get(0).getPuissanceCoupHumain());
 
-                }
+
             }
         }
     }
