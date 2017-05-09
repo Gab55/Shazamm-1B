@@ -7,11 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- *
- * @author castagno
- * Classe utilisée pour établir une connexion avec la base de données, interroger la base et insérer de nouveaux tuples dans la base
- */
+
 public class BDD {
 
     private String host,username, password;
@@ -56,13 +52,7 @@ public class BDD {
         }
     }
 
-    /*
-     * Interroge la base de données avec la requête passée en paramètre
-     * et retourne les résultats sous forme d'une liste de String.
-     * Il faut utiliser la méthode executeQuery dans la classe Statement (voir cours 12).
-     * Indice : comme on ne sait pas à l'avance combien d'attributs (colonnes) on a dans nos tuples,
-     * on peut utiliser la classe ResultSetMetaData (voir méthodes getMetaData() de la classe ResultSet et getColumnCount() de la classe ResultSetMetaData)
-     */
+
     public ArrayList<String> getTuples(String query) {
         ArrayList<String> res = null;
         try {

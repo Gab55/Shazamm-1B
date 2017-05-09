@@ -2,9 +2,7 @@ package com.company;
 
 import java.util.ArrayList;
 
-/**
- * Created by RobertPastiss on 28/04/2017.
- */
+
 
 // CLASSE FILLE HUMAIN QUI VA HERITER DE LA CLASSE JOUEUR
 

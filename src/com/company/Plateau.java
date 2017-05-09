@@ -2,9 +2,7 @@ package com.company;
 
 import java.util.Hashtable;
 
-/**
- * Created by Gaby on 20/03/2017.
- */
+
 
 // CLASSE QUI VA PERMETTRE LE GESTION DU PLATEAU DE JEU
 

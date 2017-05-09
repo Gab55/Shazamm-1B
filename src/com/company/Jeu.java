@@ -3,9 +3,7 @@ package com.company;
 import java.awt.*;
 import java.util.*;
 
-/**
- * Created by Gaby on 24/02/2017.
- */
+
 
 // CLASSE OU TOUTES LES ACTIONS VONT SE FAIRE
 

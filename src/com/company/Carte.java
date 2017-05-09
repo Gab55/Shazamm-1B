@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 
-/**
- * Created by Gaby on 24/02/2017.
- */
+
 
 // CLASSE OU ON VA FAIRE GERER LES CARTES ET LEURS COMPORTEMENTS
 public class Carte {

@@ -2,9 +2,7 @@ package com.company;
 
 import java.util.Scanner;
 
-/**
- * Created by Gaby on 22/02/2017.
- */
+
 
 // CLASSE MERE DE LA CLASSE HUMAIN ET IA
 
