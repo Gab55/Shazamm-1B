@@ -100,7 +100,6 @@ public void infoBDD(BDD bdd) {
     // méthode qui va permetre au joueus physique de donner la mise qui va donc correspondre à la puissance de son attaque
 
     public void choixPuissanceHumain(Plateau plateau,  Humain humain){
-        System.out.println(" le nombre de cases est de "+plateau.getTailleTab());
         for (int i=0; i<listHumain.size();i++) { // on parcours la liste de joueurs humain
             superPaquet(); // on affiche le paquet avec les cartes disponible pour le joueur
             // à partir d'ici les conditions vont faire en sorte que le joueur ne puisse pas tricher
@@ -217,6 +216,9 @@ public void infoBDD(BDD bdd) {
     // cette méthode va permettre de modifier le tableau de jeu en fonction des résultats entre l'ia et le joueurs
 
     public void attaquer(Plateau plateau,  Humain humain, IA ia) {
+        System.out.println("J1 avant attaque :     " + plateau.getPlaceJ1()); // place du mur avant
+        System.out.println("J2 avant attaque :     " + plateau.getPlaceJ2()); // place du mur avant
+        System.out.println("plce du mur avant attaque "+plateau.getPlaceMur());
         // on appel les méthodes pour choisir la mise des coups par le joueur et l'IA
         this.choixPuissanceHumain(plateau, humain);
         this.choixPuissanceIA(plateau, ia);
@@ -225,7 +227,6 @@ public void infoBDD(BDD bdd) {
             System.out.println("Pas assez fort HUMAIN l'IA gagne le tour (J2) "); //
             plateau.setPlaceMur(plateau.getPlaceMur() - 1); // on déplace le mur en fonction du gagnant
             plateau.plateauBase.put("m", plateau.getPlaceMur());
-
             if (plateau.getPlaceJ1() >= plateau.getPlaceMur()) { // condition pour gagner la manche en fonction ou se trouve le mur
                 System.out.println("Bien joué IA");
                 System.out.println("FIN DE LA MANCHE !!!! ");
@@ -236,7 +237,7 @@ public void infoBDD(BDD bdd) {
                 nbManches+=1;
             }
             // condition si le joueurs tombe dans la lave
-            if (plateau.getPlaceJ1() == 0) {     // Condition si J1 est à 0
+            if (plateau.getPlaceJ1() == nbCase) {     // Condition si J1 est dans la lave
                 System.out.println("Fin du game");
 
             }
@@ -254,6 +255,7 @@ public void infoBDD(BDD bdd) {
                 System.out.println("Taille tab " + plateau.getTailleTab());
                 FinManche(plateau);
                 nbManches+=1;
+
             }
             //condition si l'IA tombe à l'eau
             if (plateau.getPlaceJ2() >= plateau.getTailleTab()) {     // Condition si J2 est au bout du plateau droit
@@ -364,32 +366,36 @@ public void infoBDD(BDD bdd) {
 
     // cette méthode va permettre de faire la gestion de fin de tours (mana, déplacement de joueurs ...)
     public void FinManche(Plateau plateau){
+        System.out.println(" place du mur "+plateau.getPlaceMur());
+        System.out.println("J1  :     " + plateau.getPlaceJ1()); // place du mur avant
+        System.out.println("J2  :     " + plateau.getPlaceJ2()); // place du mur avant
         listHumain.get(0).setPointMana(50); // on donne 50 points de mana au joueur Humain
         System.out.println("Joueur "+listHumain.get(0).getNomJoueur()+" a "+listHumain.get(0).getPointMana()+" points de mana");
         listIA.get(0).setPointMana(50); // on donne 50 points de mana a l'IA
         System.out.println("Joueur "+listIA.get(0).getNomJoueur()+" a "+listIA.get(0).getPointMana()+" points de mana");
         //a partir d'ici on va gerer la déplacement des joueurs mais aussi du mur
+        System.out.println("nombre de manche: "+nbManches);
         int a=((plateau.getTailleTab()+1)/2)-plateau.getPlaceMur();
-        System.out.println("a:   "+a);
         if (nbManches>1) {
             listHumain.get(0).setTotalPuissanceCoupHumain(0); // on remet à 0 la puissance total des coup du joueur humain
+            nbManches=1;
+            System.out.println("nombre de manche: "+nbManches);
             nbTour=1;
-            nbCase=+1;
+            nbCase++;
             melanger(); // on mélange de nouveau les cartes
             plateau.setTailleTab(plateau.getTailleTab() - 2); // on retire 2 cases au plateau
             System.out.println("avant :     " + plateau.getPlaceMur()); // place du mur avant
-            plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1) - a); // on change la place du mur
+            //plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1)); // on change la place du mur
+            plateau.setPlaceMur((plateau.getTailleTab() / 2 + 1)-a); // on change la place du mur
             System.out.println("apres :     " + plateau.getPlaceMur()); // place du mur après
+            System.out.println("J1 apres  :     " + plateau.getPlaceJ1()); // place du mur avant
+            System.out.println("J2 apres :     " + plateau.getPlaceJ2()); // place du mur avant
             plateau.setPlaceJ1(plateau.getPlaceMur() - 3); // on change la place du joueur 1
             plateau.setPlaceJ2(plateau.getPlaceMur() + 3); // on change la place du joueur 2
             // on place les résultat dans notre HashTable
             plateau.plateauBase.put("J1", plateau.getPlaceJ1());
             plateau.plateauBase.put("m", plateau.getPlaceMur());
             plateau.plateauBase.put("J2", plateau.getPlaceJ2());
-//            plateau.plateauBase.put("J1", plateau.getPlaceJ1()+3);
-//            plateau.plateauBase.put("m", plateau.getPlaceMur());
-//            plateau.plateauBase.put("J2", plateau.getPlaceJ2()+3);
-//            nbManches+=1
         }
 
     }

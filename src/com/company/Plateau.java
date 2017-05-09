@@ -61,5 +61,5 @@ public class Plateau {
         this.placeJ2 = placeJ2;
     }
 
-    
+
 }
