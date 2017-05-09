@@ -12,7 +12,6 @@ public class Joueur {
     private String nomJoueur;
     private int numJoueur;
     private int pointMana=50;
-    private int puissanceCoup;
 
     ///////////////////// CONSTRUCTEUR /////////////////////////////////
 
@@ -44,11 +43,4 @@ public class Joueur {
 
     public void setPointMana(int pointMana){this.pointMana=pointMana;}
 
-    public int getPuissanceCoup() {
-        return puissanceCoup;
-    }
-
-    public void setPuissanceCoup(int puissanceCoup) {
-        this.puissanceCoup = puissanceCoup;
-    }
 }

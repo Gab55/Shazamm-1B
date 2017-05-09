@@ -128,9 +128,9 @@ public void infoBDD(BDD bdd) {
                 break;
             }
             else { // si aucunes des conditions n'est validées et DONC que le jeu se déroule normalement
-                listHumain.get(0).setPuissanceCoup(puissance); // on modifie la variable du joueur humain PuissanceCoup est qui va prendre la valeur d'entrée du scanner
+                listHumain.get(0).setPuissanceCoupHumain(puissance); // on modifie la variable du joueur humain PuissanceCoup est qui va prendre la valeur d'entrée du scanner
                 listHumain.get(0).setPointMana(listHumain.get(0).getPointMana() - puissance); //  on modifie la variable des points de mana (ou d'action) l'opération est = > Point de Mana - puissance entrée par le joueur par le scanner
-                listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoup()+listHumain.get(0).getTotalPuissanceCoupHumain()); // total de tout les coups du joueur physique, cela va nous permettre de faire "apprendre l'IA"
+                listHumain.get(0).setTotalPuissanceCoupHumain(listHumain.get(0).getPuissanceCoupHumain()+listHumain.get(0).getTotalPuissanceCoupHumain()); // total de tout les coups du joueur physique, cela va nous permettre de faire "apprendre l'IA"
                 // pour le calcul d'une meilleurs probablité d'intervale de coups
                 choixCarte(plateau,humain); // on appel la méthode choixCarte qui va permettre au joueur de choisir une carte
                 System.out.println(" Puissance du coup " + puissance); // on affiche la puissance du coup à l'écran
@@ -152,7 +152,7 @@ public void infoBDD(BDD bdd) {
     // puis par la suite elle sera capable de caculer un intervalle maximisant pour elle
 
     public void choixPuissanceIA(Plateau plateau, IA ia){
-        int puissanceH = listHumain.get(0).getPuissanceCoup(); // on part de coup du joueurs "humain"
+        int puissanceH = listHumain.get(0).getPuissanceCoupHumain(); // on part de coup du joueurs "humain"
         int puissanceMiniIA =1; // la mise minimum de l'IA
         int fonctionIA = puissanceMiniIA + (int) (Math.random()*(puissanceH - puissanceMiniIA) +5);
         int probaCoupHumain = listHumain.get(0).getTotalPuissanceCoupHumain()/nbTour; // a pour but de calculer un intervale pour permettre potentiellement à l'IA de connaitre un meilleurs intervalle de meilleurs coups
@@ -202,11 +202,11 @@ public void infoBDD(BDD bdd) {
             // si aucunes autres conditions est vérifiées et DONC que le déroulement est bon
             else {
 
-                listIA.get(0).setPuissanceCoup(fonctionIA);
+                listIA.get(0).setPuissanceCoupIA(fonctionIA);
                 listIA.get(0).setPointMana(listIA.get(0).getPointMana() - fonctionIA);
                 choixCarteIA(plateau, ia);
                 System.out.println(" Puissance du coup " + fonctionIA);
-                System.out.println(" la puissance du coup est l'IA "+listIA.get(0).getPuissanceCoup());
+                System.out.println(" la puissance du coup est l'IA "+listIA.get(0).getPuissanceCoupIA());
                 System.out.println("il reste " + listIA.get(0).getPointMana() + " points de Mana à l'IA");
                 System.out.println("");
 
@@ -223,7 +223,7 @@ public void infoBDD(BDD bdd) {
         this.choixPuissanceHumain(plateau, humain);
         this.choixPuissanceIA(plateau, ia);
         // on va comparer les puissances de l'ia et du joueur
-        if (listHumain.get(0).getPuissanceCoup() < listIA.get(0).getPuissanceCoup()) {
+        if (listHumain.get(0).getPuissanceCoupHumain() < listIA.get(0).getPuissanceCoupIA()) {
             System.out.println("Pas assez fort HUMAIN l'IA gagne le tour (J2) "); //
             plateau.setPlaceMur(plateau.getPlaceMur() - 1); // on déplace le mur en fonction du gagnant
             plateau.plateauBase.put("m", plateau.getPlaceMur());
@@ -245,7 +245,7 @@ public void infoBDD(BDD bdd) {
 
             //Attaque IA pas assez forte
             // Même condition que pour l'IA mais cette fois-ci pour le joueur
-        } else if (listHumain.get(0).getPuissanceCoup() > listIA.get(0).getPuissanceCoup()) {
+        } else if (listHumain.get(0).getPuissanceCoupHumain() > listIA.get(0).getPuissanceCoupIA()) {
             System.out.println("Pas assez fort IA le " + listHumain.get(0).getNomJoueur() + " gagne le tour (HUMAIN) J1 ");
             plateau.setPlaceMur(plateau.getPlaceMur() + 1);
             plateau.plateauBase.put("m", plateau.getPlaceMur());
