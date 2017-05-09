@@ -7,9 +7,9 @@ import java.util.Scanner;
 // CLASSE MERE DE LA CLASSE HUMAIN ET IA
 
 public class Joueur {
-    private String nomJoueur;
-    private int numJoueur;
-    private int pointMana=50;
+    protected String nomJoueur;
+    protected int numJoueur;
+    protected int pointMana=50;
 
     ///////////////////// CONSTRUCTEUR /////////////////////////////////
 

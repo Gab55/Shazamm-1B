@@ -100,9 +100,9 @@ public class Carte {
             } else if (numCarte == 9) {
                 System.out.println("carte Qui perd gagne");
                 if (jeu.getListHumain().get(i) == jeu.getListHumain().get(0)) {
-                    plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                    plateau.setPlaceMur(plateau.getPlaceMur() - 1);
                 } else if (jeu.getListHumain().get(i) == jeu.getListHumain().get(1)) {
-                    plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                    plateau.setPlaceMur(plateau.getPlaceMur() + 1);
                 }
             } else if (numCarte == 10) {
                 System.out.println("carte Brasier");
@@ -182,9 +182,9 @@ public class Carte {
             } else if (numCarte == 10) {
                 System.out.println("carte Brasier");
                 if (jeu.getListIA().get(i) == jeu.getListIA().get(0)) {
-                    plateau.setPlaceMur(plateau.getPlaceMur() + 2);
+                    plateau.setPlaceMur(plateau.getPlaceMur() + 1);
                 } else if (jeu.getListIA().get(i) == jeu.getListIA().get(1)) {
-                    plateau.setPlaceMur(plateau.getPlaceMur() - 2);
+                    plateau.setPlaceMur(plateau.getPlaceMur() - 1);
                 }
 
             } else if (numCarte == 11) {

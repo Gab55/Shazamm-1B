@@ -13,6 +13,7 @@ public class Jeu {
         private ArrayList<Humain> listHumain; // liste de joueurs physique
         private ArrayList<IA> listIA; // liste de joueurs IA
         private int nbTour=1;
+        private int nbCase;
         private int nbManches=1;
         private ArrayList <Carte> listCarte; // liste des cartes du joueur physique
         private ArrayList <Carte> listCarte2; // liste des cartes du joueur IA
@@ -52,12 +53,11 @@ public class Jeu {
         }
 
         infoBDD(bdd);
-        System.out.println("Liste joueur Humain "+listHumain+" ");
         Plateau p= new Plateau(); // on initialise un objet plateau (le plateau de jeu)
         init(); // appel de la méthode init
         superPaquet(); // appel de la méthode superPaquet
 
-        while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>0)) { // condition d'arret du jeu ou du programme
+        while (p.getPlaceJ2()<p.getTailleTab()&&(p.getPlaceJ1()>nbCase)) { // condition d'arret du jeu ou du programme
             attaquer(p,humain,ia); // appel de la méthode attaquer
         }
 
@@ -374,6 +374,7 @@ public void infoBDD(BDD bdd) {
         if (nbManches>1) {
             listHumain.get(0).setTotalPuissanceCoupHumain(0); // on remet à 0 la puissance total des coup du joueur humain
             nbTour=1;
+            nbCase=+1;
             melanger(); // on mélange de nouveau les cartes
             plateau.setTailleTab(plateau.getTailleTab() - 2); // on retire 2 cases au plateau
             System.out.println("avant :     " + plateau.getPlaceMur()); // place du mur avant
@@ -388,7 +389,7 @@ public void infoBDD(BDD bdd) {
 //            plateau.plateauBase.put("J1", plateau.getPlaceJ1()+3);
 //            plateau.plateauBase.put("m", plateau.getPlaceMur());
 //            plateau.plateauBase.put("J2", plateau.getPlaceJ2()+3);
-//            nbManches+=1;
+//            nbManches+=1
         }
 
     }

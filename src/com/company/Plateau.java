@@ -12,7 +12,7 @@ public class Plateau {
     Hashtable plateauBase = new Hashtable(tailleTab);
     private int placeMur = tailleTab/2+1; // opération qui va permettre de connaitre la place du mur même après modification du plateau
     private int placeJ1 = placeMur-3; // opération qui va permettre de connaitre la place du J1 même après modification du plateau
-    private int placeJ2= placeMur+3; // opération qui va permettre de connaitre la place du J1 même après modification du plateau
+    private int placeJ2= placeMur+3; // opération qui va permettre de connaitre la place du J2 même après modification du plateau
 
     public Plateau() {
 
